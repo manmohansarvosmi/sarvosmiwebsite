@@ -1,0 +1,7 @@
+{
+  "name": "Sarvosmi ERX™ RMSC",
+  "description": "Real-Time Raw Material Supply Chain Execution Platform & IIoT Solutions by Sarvosmi Consulting",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
