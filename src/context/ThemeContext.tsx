@@ -23,22 +23,23 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  // Default to 'light' as requested
+  // Always default to dark. Use new storage key 'sarvosmi_theme_v2' to clear old preference.
   const [theme, setTheme] = useState<Theme>(() => {
     try {
-      const saved = localStorage.getItem('sarvosmi_theme');
-      if (saved === 'dark' || saved === 'light') {
-        return saved;
-      }
+      const saved = localStorage.getItem('sarvosmi_theme_v3');
+      if (saved === 'dark' || saved === 'light') return saved;
+      // Clear old keys
+      localStorage.removeItem('sarvosmi_theme');
+      localStorage.removeItem('sarvosmi_theme_v2');
     } catch {
       // fallback
     }
-    return 'light'; // Default is LIGHT THEME
+    return 'light'; // Default: LIGHT THEME
   });
 
   useEffect(() => {
     try {
-      localStorage.setItem('sarvosmi_theme', theme);
+      localStorage.setItem('sarvosmi_theme_v3', theme);
     } catch {
       // ignore
     }

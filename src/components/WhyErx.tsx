@@ -1,380 +1,550 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Database,
   Calendar,
   DollarSign,
   Building2,
-  Home,
   Truck,
-  Video,
+  Warehouse,
   ClipboardCheck,
   Bell,
-  Cog,
-  Users,
+  Cpu,
+  Target,
+  Zap,
+  CheckCircle2,
+  ArrowRight,
+  ArrowLeftRight,
+  ArrowUpRight,
+  Activity,
+  Layers,
+  Sparkles,
+  Scan,
+  Radio,
+  Factory,
+  ShieldCheck,
+  RefreshCw,
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  FileSpreadsheet,
+  CheckSquare,
+  QrCode,
+  Gauge,
+  Sliders,
+  Flame
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import bridgeImg from '../asset/bridge.png';
 
 export const WhyErx: React.FC = () => {
   const { isDark } = useTheme();
+  const [activeSyncTab, setActiveSyncTab] = useState<'all' | 'downstream' | 'upstream'>('all');
+
+  const erxDifferences = [
+    {
+      id: 'diff-1',
+      title: 'Real-Time Capture',
+      desc: 'All activities recorded live as they happen on docks, racks & production lines via wearable scanners.',
+      category: 'LIVE TELEMETRY',
+      icon: Radio,
+      color: '#3b82f6',
+    },
+    {
+      id: 'diff-2',
+      title: 'Compares Plans',
+      desc: 'Instant delta verification between ERP planned orders vs actual physical floor stock and bin status.',
+      category: 'DEVIATION ENGINE',
+      icon: ClipboardCheck,
+      color: '#f59e0b',
+    },
+    {
+      id: 'diff-3',
+      title: 'Real-Time Alerts',
+      desc: 'Automated shortage triggers and bottleneck alerts sent immediately to buyers, planners & supervisors.',
+      category: 'EARLY WARNING',
+      icon: Bell,
+      color: '#ef4444',
+    },
+    {
+      id: 'diff-4',
+      title: 'Reduces Manual Work',
+      desc: 'Zero manual data entry, no paper slips, no delayed registers or error-prone spreadsheet logs.',
+      category: 'LEAN AUTOMATION',
+      icon: Cpu,
+      color: '#06b6d4',
+    },
+    {
+      id: 'diff-5',
+      title: 'Helps Teams Focus',
+      desc: 'Hands-free wearable scanners let dock and store operators focus on rapid material movement.',
+      category: 'OPERATOR EMPOWERMENT',
+      icon: Target,
+      color: '#8b5cf6',
+    },
+  ];
+
+  const downstreamItems = [
+    'Material Demands (MRP Net Requirements)',
+    'Shift Production Work Orders',
+    'Procurement POs & Vendor Allocations',
+    'Bill of Materials (BOM) Specifications',
+  ];
+
+  const upstreamItems = [
+    '1-Scan Gate Inward & Unloading Dock Telemetry',
+    'Real-Time QC Inspection Pass / Fail Status',
+    'Physical Bin & Rack Put-Away Verification',
+    'Line Feeding Consumption & 15-Min Defect Alerts',
+  ];
 
   return (
-    <section id="why-erx-section" className="w-full py-1.5 px-2 sm:px-4 transition-colors duration-300">
-      <div className="w-full max-w-[1530px] mx-auto">
-        {/* Main Card Wrapper - Compact Single-Screen Height Fit */}
-        <div
-          className={`w-full rounded-2xl p-3 sm:p-4 overflow-hidden relative shadow-xl border transition-colors ${
-            isDark
-              ? 'bg-slate-900/90 border-slate-800 text-slate-100 shadow-slate-950/50'
-              : 'bg-white/95 border-white/80 text-slate-800 shadow-sky-950/10'
-          }`}
-        >
-          {/* Subtle Top Ambient Glow */}
-          <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-gradient-to-b from-sky-500/15 via-emerald-500/10 to-transparent blur-3xl pointer-events-none rounded-full" />
+    <section id="why-erx-section" className="w-full section-padding px-4 sm:px-8 lg:px-12 xl:px-16 transition-colors duration-300 relative">
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
 
-          {/* Header Section */}
-          <header className="text-center mb-2.5 relative z-10">
+          {/* ═══════════ HEADER ═══════════ */}
+          <header className="text-center mb-6 relative z-10">
             <div
-              className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[9px] sm:text-[10px] font-extrabold tracking-[0.2em] uppercase mb-1 shadow-xs ${
-                isDark ? 'bg-slate-800/80 border-slate-700 text-slate-300' : 'bg-slate-100/80 border-slate-200/80 text-slate-600'
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg border text-[10px] font-black tracking-[0.2em] uppercase mb-2 shadow-xs ${
+                isDark
+                  ? 'bg-slate-800/80 border-slate-700 text-slate-300'
+                  : 'bg-slate-100/80 border-slate-200 text-slate-700'
               }`}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
-              <span>BRIDGING PLANS TO REALITY</span>
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+              <span>BRIDGING PLANS TO PHYSICAL REALITY</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             </div>
 
-            <h1 className={`text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight mb-0.5 leading-tight ${isDark ? 'text-white' : 'text-[#0B1E3F]'}`}>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight text-slate-900 dark:text-white">
               Why Enterprise Resource eXecution (
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500">
                 ERX
               </span>
               )?
             </h1>
 
-            <p className={`text-xs sm:text-sm font-medium max-w-xl mx-auto ${isDark ? 'text-slate-300' : 'text-slate-600'}`}>
-              Because great plans create value only when they are executed.
+            <p className="text-xs sm:text-sm font-semibold max-w-3xl mx-auto mt-1.5 text-slate-600 dark:text-slate-300">
+              Because great plans create enterprise value only when they are executed in real-time on the physical shop floor.
             </p>
           </header>
 
-          {/* Comparison Bridge Section (3 Columns: ERP -> Bridge -> ERX) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 items-stretch mb-2.5 relative z-10">
+          {/* ═══════════ 3-COLUMN ARCHITECTURAL COMMAND CENTER ═══════════ */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch mb-6 relative z-10">
             
-            {/* LEFT CARD: ERP (THE BRAIN) */}
+            {/* ── LEFT COLUMN: ERP (THE BRAIN) ── */}
             <div
-              className={`lg:col-span-4 rounded-xl p-2.5 flex flex-col justify-between border shadow-sm transition-all duration-300 ${
+              className={`lg:col-span-4 rounded-xl p-4 sm:p-5 flex flex-col justify-between border shadow-sm transition-all duration-300 relative overflow-hidden ${
                 isDark
-                  ? 'bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 border-slate-800'
-                  : 'bg-gradient-to-b from-sky-50/60 via-white to-sky-50/30 border-sky-100/80'
+                  ? 'bg-slate-800/80 border-blue-500/30 shadow-blue-950/20'
+                  : 'bg-gradient-to-b from-blue-50/50 via-white to-slate-50 border-blue-200/90 shadow-[0_2px_12px_rgba(59,130,246,0.08)]'
               }`}
             >
-              <div className="text-center mb-1">
-                <h2 className={`text-xl font-black tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>ERP</h2>
-                <span className="inline-block text-[9px] font-extrabold text-slate-500 tracking-[0.2em] uppercase">THE BRAIN</span>
-                <p className="text-[10px] font-semibold text-sky-500">Plan | Manage | Analyze</p>
-              </div>
-
-              {/* ERP Graphic: Compact Workstation Monitor */}
-              <div
-                className={`relative w-full h-28 rounded-lg p-1.5 flex items-center justify-end overflow-hidden border shadow-inner ${
-                  isDark ? 'bg-slate-950/80 border-slate-800' : 'bg-gradient-to-b from-slate-50/90 via-sky-50/50 to-slate-100/80 border-slate-200/80'
-                }`}
-              >
-                {/* Desktop Monitor Frame */}
-                <div className="w-48 sm:w-52 bg-slate-900 rounded p-1 shadow-xl border border-slate-700/80 relative z-10 mr-1">
-                  <div className="bg-white dark:bg-slate-950 rounded p-1.5 space-y-1 border border-slate-100 dark:border-slate-800">
-                    <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-0.5">
-                      <div className="flex items-center space-x-1">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-400" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                        <span className="text-[7.5px] font-bold text-slate-700 dark:text-slate-300 ml-0.5">ERP Analytics Studio</span>
-                      </div>
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-lg bg-blue-500/15 border border-blue-500/30 text-blue-600 dark:text-blue-400 flex items-center justify-center">
+                      <Database className="w-5 h-5" />
                     </div>
-
-                    <div className="grid grid-cols-12 gap-1">
-                      {/* Bar Graph Visual */}
-                      <div className="col-span-7 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded p-1 flex flex-col justify-between">
-                        <div className="flex justify-between items-center text-[6px] font-semibold text-slate-500 dark:text-slate-400">
-                          <span>Target</span>
-                          <span className="text-sky-600 font-bold">+18.4%</span>
-                        </div>
-                        <div className="h-7 flex items-end justify-between px-0.5 gap-0.5">
-                          <div className="w-1.5 bg-sky-200 dark:bg-sky-900 rounded-t-xs h-2.5" />
-                          <div className="w-1.5 bg-sky-300 dark:bg-sky-700 rounded-t-xs h-4" />
-                          <div className="w-1.5 bg-sky-400 dark:bg-sky-600 rounded-t-xs h-3" />
-                          <div className="w-1.5 bg-sky-500 rounded-t-xs h-5.5" />
-                          <div className="w-1.5 bg-sky-600 rounded-t-xs h-6.5 shadow-xs" />
-                        </div>
-                      </div>
-
-                      {/* Donut Chart Visual */}
-                      <div className="col-span-5 bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded p-0.5 flex flex-col items-center justify-center">
-                        <div className="relative w-6 h-6">
-                          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                            <circle cx="18" cy="18" fill="none" r="14" stroke={isDark ? "#334155" : "#e2e8f0"} strokeWidth="4" />
-                            <circle cx="18" cy="18" fill="none" r="14" stroke="#0ea5e9" strokeDasharray="55 100" strokeWidth="4" />
-                            <circle cx="18" cy="18" fill="none" r="14" stroke="#10b981" strokeDasharray="25 100" strokeDashoffset="-55" strokeWidth="4" />
-                          </svg>
-                          <div className="absolute inset-0 flex items-center justify-center text-[5.5px] font-bold text-slate-700 dark:text-slate-300">92%</div>
-                        </div>
-                        <span className="text-[5.5px] text-slate-500 font-medium">Budget</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Manager Silhouette */}
-                <div className="absolute left-1 -bottom-2 z-20 flex items-end">
-                  <div className="relative">
-                    <div className="w-10 h-10 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full mx-auto relative border border-white shadow-md overflow-hidden z-20">
-                      <div className="absolute -top-1 right-0 w-8 h-7 bg-slate-900 rounded-full" />
-                      <div className="absolute top-1 left-0.5 w-4 h-4 bg-slate-900 rounded-full" />
-                    </div>
-                    <div className="w-20 h-12 bg-gradient-to-br from-sky-600 to-blue-700 rounded-t-xl border-t border-l border-white shadow-lg relative -mt-1 z-10" />
-                  </div>
-                </div>
-              </div>
-
-              {/* ERP 3 Feature Badges */}
-              <div className="grid grid-cols-3 gap-1 mt-1.5 pt-1.5 border-t border-sky-100 dark:border-slate-800 text-center">
-                <div className="flex items-center justify-center space-x-1">
-                  <Database className="w-3.5 h-3.5 text-sky-600" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Manages Data</span>
-                </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <Calendar className="w-3.5 h-3.5 text-indigo-600" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Scheduling</span>
-                </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <DollarSign className="w-3.5 h-3.5 text-amber-600" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Finances</span>
-                </div>
-              </div>
-            </div>
-
-            {/* CENTER COLUMN: THE EXECUTION BRIDGE */}
-            <div className="lg:col-span-4 flex flex-col justify-between items-center text-center py-1 px-1 relative">
-              <div className="px-1 mb-0.5">
-                <p className={`text-xs font-semibold leading-tight ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
-                  Bridging high-level planning<br />and real-world operations.
-                </p>
-              </div>
-
-              {/* Flow Directional Labels */}
-              <div className="w-full flex items-center justify-between px-2 mb-0.5 text-[10px] font-extrabold z-20">
-                <div className={`flex items-center space-x-1 px-2 py-0.5 rounded-full border shadow-xs ${isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white/90 border-sky-100 text-slate-800'}`}>
-                  <span>Plans</span>
-                  <span className="text-sky-500 text-xs font-black">➔</span>
-                </div>
-                <div className={`flex items-center space-x-1 px-2 py-0.5 rounded-full border shadow-xs ${isDark ? 'bg-slate-800 border-slate-700 text-white' : 'bg-white/90 border-emerald-100 text-slate-800'}`}>
-                  <span>Execution</span>
-                  <span className="text-emerald-500 text-xs font-black">➔</span>
-                </div>
-              </div>
-
-              {/* Arch Bridge Graphic with Center Badge */}
-              <div className="relative w-full h-28 my-auto flex items-center justify-center">
-                <svg className="absolute bottom-0 w-full h-24 overflow-visible z-10" viewBox="0 0 320 120" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="bridgeSpanGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#0284c7" />
-                      <stop offset="35%" stopColor="#059669" />
-                      <stop offset="70%" stopColor="#10b981" />
-                      <stop offset="100%" stopColor="#14b8a6" />
-                    </linearGradient>
-                  </defs>
-                  <path d="M 8 116 Q 160 8 312 116" fill="none" stroke="#0f172a" strokeWidth="16" strokeOpacity="0.08" strokeLinecap="round" />
-                  <path d="M 10 114 Q 160 6 310 114" fill="none" stroke="url(#bridgeSpanGrad)" strokeWidth="12" strokeLinecap="round" />
-                  <path d="M 18 114 Q 160 14 302 114" fill="none" stroke="#ffffff" strokeWidth="2" strokeDasharray="5,4" strokeLinecap="round" />
-                </svg>
-
-                {/* Center Badge */}
-                <div className="relative z-30 w-20 h-20 rounded-full bg-gradient-to-br from-[#0c4a6e] via-[#047857] to-[#065f46] text-white p-1 shadow-lg flex flex-col items-center justify-center border-2 border-white text-center transform transition-all duration-300 hover:scale-105">
-                  <span className="text-[8px] uppercase font-bold tracking-widest text-emerald-200">From</span>
-                  <span className="text-base font-extrabold leading-tight text-white">Plan</span>
-                  <span className="text-[7px] uppercase font-bold tracking-widest text-sky-200">to</span>
-                  <span className="text-[11px] font-black tracking-wide text-white uppercase">Action</span>
-                </div>
-              </div>
-
-              <div className="mt-0.5">
-                <p className={`text-xs sm:text-sm font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-800'}`}>
-                  Turning strategy into<br />daily, physical actions.
-                </p>
-              </div>
-            </div>
-
-            {/* RIGHT CARD: ERX (THE HANDS AND FEET) */}
-            <div
-              className={`lg:col-span-4 rounded-xl p-2.5 flex flex-col justify-between border shadow-sm transition-all duration-300 ${
-                isDark
-                  ? 'bg-gradient-to-b from-slate-900 via-slate-900/90 to-slate-950 border-slate-800'
-                  : 'bg-gradient-to-b from-emerald-50/60 via-white to-emerald-50/30 border-emerald-100/80'
-              }`}
-            >
-              <div className="text-center mb-1">
-                <h2 className="text-xl font-black text-emerald-500 tracking-tight">ERX</h2>
-                <span className="inline-block text-[9px] font-extrabold text-slate-500 tracking-[0.2em] uppercase">THE HANDS AND FEET</span>
-                <p className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">Execute | Monitor | Control</p>
-              </div>
-
-              {/* ERX Graphic: Compact Shop Floor Scoreboard HUD */}
-              <div className="relative w-full h-28 rounded-lg p-1.5 overflow-hidden border border-slate-800 bg-gradient-to-br from-slate-950 to-slate-900 text-white shadow-xl flex flex-col justify-between">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-1 relative z-10">
-                  <div className="flex items-center space-x-1">
-                    <span className="relative flex h-1.5 w-1.5">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                    </span>
-                    <span className="text-[8px] font-extrabold tracking-wider uppercase text-slate-200">SCOREBOARD</span>
-                  </div>
-                  <div className="text-[7.5px] font-mono text-emerald-400 bg-emerald-950/90 px-1 py-0.2 rounded border border-emerald-800/80">
-                    Line 1 - Body Shop
-                  </div>
-                </div>
-
-                {/* HUD Metrics Grid */}
-                <div className="grid grid-cols-12 gap-1 my-auto relative z-10">
-                  {/* Gauge 1: OEE */}
-                  <div className="col-span-4 bg-slate-900/90 p-1 rounded border border-slate-800 text-center flex flex-col justify-center items-center">
-                    <span className="text-[7px] font-bold text-slate-400 uppercase">OEE</span>
-                    <div className="relative w-7 h-7 my-0.5 flex items-center justify-center">
-                      <svg className="w-7 h-7 transform -rotate-90" viewBox="0 0 36 36">
-                        <path className="text-slate-800" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeWidth="4" />
-                        <path className="text-emerald-400" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" strokeDasharray="78.6, 100" strokeLinecap="round" strokeWidth="4" />
-                      </svg>
-                      <span className="absolute text-[7.5px] font-black text-white">78%</span>
-                    </div>
-                    <span className="text-[6px] text-emerald-400 font-mono">97.1%</span>
-                  </div>
-
-                  {/* Gauge 2: OUTPUT VS TARGET */}
-                  <div className="col-span-4 bg-slate-900/90 p-1 rounded border border-slate-800 flex flex-col justify-between">
-                    <span className="text-[7px] font-bold text-slate-400 uppercase block">OUTPUT</span>
-                    <div className="text-[7px] font-mono">
-                      <span className="text-emerald-400 font-bold">412</span> / 450
-                    </div>
-                    <div className="flex items-end space-x-0.5 h-3.5 pt-0.5">
-                      <div className="w-1 bg-emerald-600 h-2 rounded-t" />
-                      <div className="w-1 bg-emerald-500 h-3 rounded-t" />
-                      <div className="w-1 bg-emerald-400 h-3.5 rounded-t" />
-                    </div>
-                  </div>
-
-                  {/* Gauge 3: DOWNTIME ALERTS */}
-                  <div className="col-span-4 bg-slate-900/90 p-1 rounded border border-slate-800 flex flex-col justify-between text-[6px]">
                     <div>
-                      <span className="font-extrabold text-rose-400 uppercase flex items-center gap-0.5">
-                        <span className="w-1 h-1 rounded-full bg-rose-500 animate-ping" />
-                        ALERTS
+                      <h2 className="text-base font-black text-slate-900 dark:text-white leading-tight">ERP</h2>
+                      <span className="text-[9.5px] font-extrabold text-blue-600 dark:text-blue-400 tracking-wider uppercase">
+                        THE BRAIN • Plan | Manage | Analyze
                       </span>
-                      <p className="text-slate-200 font-mono leading-tight truncate">Robot #2</p>
                     </div>
-                    <div className="pt-0.5 border-t border-slate-800 flex items-center justify-between">
-                      <span className="font-mono text-white bg-emerald-900/80 px-1 rounded text-[6px]">
-                        0 Incidents
+                  </div>
+                  <span className="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/20">
+                    Static Planning
+                  </span>
+                </div>
+
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                  Calculates requirements, generates master production schedules, and manages corporate financial governance.
+                </p>
+
+                {/* ERP Analytics Studio Mockup Screen */}
+                <div className="w-full rounded-lg bg-slate-950 text-white p-3.5 border border-slate-800 shadow-inner mb-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span className="text-[10px] font-bold text-slate-300 ml-1.5 flex items-center gap-1">
+                        <Sliders className="w-3 h-3 text-blue-400" /> ERP Production Studio
                       </span>
+                    </div>
+                    <span className="text-[8.5px] font-mono px-1.5 py-0.5 rounded-sm bg-blue-900/50 text-blue-300 border border-blue-700/50">
+                      STATUS: PLANNED
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-2 rounded-md bg-slate-900 border border-slate-800">
+                      <span className="text-[8.5px] text-slate-400 uppercase tracking-wider font-semibold block">MONTHLY PLAN</span>
+                      <strong className="text-sm font-black text-blue-400 block">450 Units</strong>
+                      <div className="w-full h-1.5 bg-slate-800 rounded-full mt-1.5 overflow-hidden">
+                        <div className="w-[82%] h-full bg-blue-500 rounded-full" />
+                      </div>
+                    </div>
+                    <div className="p-2 rounded-md bg-slate-900 border border-slate-800">
+                      <span className="text-[8.5px] text-slate-400 uppercase tracking-wider font-semibold block">TARGET EFFICIENCY</span>
+                      <strong className="text-sm font-black text-emerald-400 block">+18.4%</strong>
+                      <span className="text-[8px] text-slate-500 mt-1 block">Scheduled on Paper</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Bottom Line Status Banner */}
-                <div className="bg-slate-900/95 border border-slate-800 rounded px-1.5 py-0.5 flex items-center justify-between text-[7px] relative z-10">
-                  <span className="px-1 py-0.2 bg-emerald-500 text-slate-950 font-black rounded text-[7px] tracking-wider">RUNNING</span>
-                  <span className="text-slate-400 font-mono">Shift: <strong className="text-emerald-400">3,128</strong></span>
+                {/* 3 ERP Feature Pods */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-blue-400 transition-colors">
+                    <Database className="w-4 h-4 text-blue-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">Master Data</strong>
+                    <span className="text-[8.5px] text-slate-500 block">BOM &amp; MRP</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-indigo-400 transition-colors">
+                    <Calendar className="w-4 h-4 text-indigo-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">Scheduling</strong>
+                    <span className="text-[8.5px] text-slate-500 block">Shift Orders</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-amber-400 transition-colors">
+                    <DollarSign className="w-4 h-4 text-amber-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">Finances</strong>
+                    <span className="text-[8.5px] text-slate-500 block">Costing &amp; GL</span>
+                  </div>
                 </div>
               </div>
 
-              {/* ERX 3 Feature Badges */}
-              <div className="grid grid-cols-3 gap-1 mt-1.5 pt-1.5 border-t border-emerald-100 dark:border-slate-800 text-center">
-                <div className="flex items-center justify-center space-x-1">
-                  <Building2 className="w-3.5 h-3.5 text-amber-500" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Factory Floor</span>
+              {/* Status footer */}
+              <div className="pt-2.5 mt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[10px] font-semibold text-slate-500">
+                <span>Enterprise Strategy &amp; Governance</span>
+                <span className="text-blue-600 dark:text-blue-400 font-bold flex items-center gap-1">
+                  Demand Out <ArrowRight className="w-3 h-3" />
+                </span>
+              </div>
+            </div>
+
+            {/* ── CENTER COLUMN: 3D BRIDGE (THE CONNECTION) ── */}
+            <div
+              className={`lg:col-span-4 rounded-xl p-3 sm:p-4 flex flex-col justify-between border shadow-sm transition-all duration-300 relative overflow-hidden text-center ${
+                isDark
+                  ? 'bg-slate-800/50 border-slate-700/80'
+                  : 'bg-gradient-to-b from-slate-50 via-white to-slate-50/80 border-slate-200/90 shadow-[0_2px_12px_rgba(0,0,0,0.04)]'
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-center gap-2 mb-1">
+                  <ArrowLeftRight className="w-4 h-4 text-indigo-500 animate-pulse" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">
+                    REAL-TIME BI-DIRECTIONAL BRIDGE
+                  </span>
                 </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <Home className="w-3.5 h-3.5 text-sky-500" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Warehouse</span>
+                <h3 className="text-xs sm:text-sm font-black text-slate-900 dark:text-white leading-snug mb-2">
+                  Bridging high-level planning and physical shop-floor reality.
+                </h3>
+
+                {/* 3D Bridge Image Container with Ambient Glow */}
+                <div className="relative my-2 rounded-xl overflow-hidden border border-slate-200/80 dark:border-slate-700/80 bg-white/50 dark:bg-slate-900/50 p-1 group">
+                  <img
+                    src={bridgeImg}
+                    alt="Real-Time Bi-Directional Bridge - Bridging high-level planning and physical shop-floor reality"
+                    className="w-full h-auto object-contain select-none transition-transform duration-300 group-hover:scale-[1.02]"
+                    loading="eager"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/20 via-transparent to-transparent pointer-events-none" />
                 </div>
-                <div className="flex items-center justify-center space-x-1">
-                  <Truck className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className={`text-[10px] font-bold ${isDark ? 'text-slate-200' : 'text-slate-800'}`}>Supply Chain</span>
+
+                <div className="mt-2 text-center">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-slate-900 text-white text-[9.5px] font-black tracking-wide border border-slate-800 shadow-sm">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+                    FROM <span className="text-blue-400">PLAN</span> TO <span className="text-emerald-400">ACTION</span>
+                  </div>
+                  <p className="text-[11px] font-bold text-slate-700 dark:text-slate-300 mt-1.5 leading-tight">
+                    Turning static ERP strategy into <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">daily, physical actions</span>.
+                  </p>
                 </div>
               </div>
+
+              {/* Sync Stream Selector */}
+              <div className="pt-2.5 mt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-center gap-1.5">
+                <span className="text-[9px] font-bold text-slate-500 uppercase">Live Telemetry Flow:</span>
+                <span className="px-2 py-0.5 rounded-md text-[8.5px] font-black uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                  <RefreshCw className="w-2.5 h-2.5 animate-spin" /> Sub-Second Sync
+                </span>
+              </div>
+            </div>
+
+            {/* ── RIGHT COLUMN: ERX (THE HANDS AND FEET) ── */}
+            <div
+              className={`lg:col-span-4 rounded-xl p-4 sm:p-5 flex flex-col justify-between border shadow-sm transition-all duration-300 relative overflow-hidden ${
+                isDark
+                  ? 'bg-slate-800/80 border-emerald-500/30 shadow-emerald-950/20'
+                  : 'bg-gradient-to-b from-emerald-50/50 via-white to-slate-50 border-emerald-200/90 shadow-[0_2px_12px_rgba(16,185,129,0.08)]'
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-9 h-9 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                      <Scan className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-base font-black text-slate-900 dark:text-white leading-tight">ERX</h2>
+                      <span className="text-[9.5px] font-extrabold text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">
+                        THE HANDS &amp; FEET • Execute | Monitor | Control
+                      </span>
+                    </div>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-md text-[9px] font-black uppercase tracking-wider bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
+                    Live Floor Action
+                  </span>
+                </div>
+
+                <p className="text-xs font-medium text-slate-600 dark:text-slate-300 leading-relaxed mb-3">
+                  Powers physical ground execution — barcode scanning, dock inwards, binning, line feeding &amp; defect swaps.
+                </p>
+
+                {/* ERX Shopfloor Scoreboard Mockup Screen */}
+                <div className="w-full rounded-lg bg-slate-950 text-white p-3.5 border border-slate-800 shadow-inner mb-3">
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-800 mb-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[10px] font-bold text-slate-300 ml-1 flex items-center gap-1">
+                        <Gauge className="w-3 h-3 text-emerald-400" /> SCOREBOARD: LINE 1 - BODY SHOP
+                      </span>
+                    </div>
+                    <span className="text-[8.5px] font-mono px-1.5 py-0.5 rounded-sm bg-emerald-950 text-emerald-300 border border-emerald-700/50">
+                      LIVE RUNNING
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="p-2 rounded-md bg-slate-900 border border-slate-800">
+                      <span className="text-[8.5px] text-slate-400 uppercase tracking-wider font-semibold block">REAL OUTPUT</span>
+                      <strong className="text-sm font-black text-emerald-400 block">412 / 450 Units</strong>
+                      <span className="text-[8px] text-emerald-300 mt-1 block">91.5% Target Achieved</span>
+                    </div>
+                    <div className="p-2 rounded-md bg-slate-900 border border-slate-800">
+                      <span className="text-[8.5px] text-slate-400 uppercase tracking-wider font-semibold block">RING SCANNER FEED</span>
+                      <strong className="text-sm font-black text-cyan-400 block">0 Defects</strong>
+                      <span className="text-[8px] text-slate-400 mt-1 block">Auto-QC Verified</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3 ERX Feature Pods */}
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-emerald-400 transition-colors">
+                    <Factory className="w-4 h-4 text-emerald-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">Factory Floor</strong>
+                    <span className="text-[8.5px] text-slate-500 block">Line Feeding</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-teal-400 transition-colors">
+                    <Warehouse className="w-4 h-4 text-teal-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">RM Store</strong>
+                    <span className="text-[8.5px] text-slate-500 block">Put &amp; Pick Bins</span>
+                  </div>
+                  <div className="p-2 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700 text-center hover:border-green-400 transition-colors">
+                    <Truck className="w-4 h-4 text-green-600 mx-auto mb-1" />
+                    <strong className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block">Supply Flow</strong>
+                    <span className="text-[8.5px] text-slate-500 block">Dock &amp; 1-Scan ASN</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Status footer */}
+              <div className="pt-2.5 mt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-[10px] font-semibold text-slate-500">
+                <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1">
+                  <ArrowRight className="w-3 h-3" /> Telemetry In
+                </span>
+                <span>100% Physical Execution Sync</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ═══════════ BI-DIRECTIONAL TELEMETRY STREAM VISUALIZER ═══════════ */}
+          <div
+            className={`rounded-xl p-4 mb-6 border transition-all duration-300 ${
+              isDark
+                ? 'bg-slate-950/60 border-slate-800'
+                : 'bg-gradient-to-r from-blue-50/70 via-slate-50 to-emerald-50/70 border-slate-200'
+            }`}
+          >
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-200 dark:border-slate-800">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-md bg-indigo-500/15 border border-indigo-500/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center">
+                  <ArrowLeftRight className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider">
+                    Bi-Directional Telemetry Stream: What Flows Across The Bridge?
+                  </h3>
+                  <span className="text-[10px] text-slate-500">Continuous sync preventing plan drift and floor stockouts</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-lg border border-slate-200 dark:border-slate-700 text-[10px] font-bold">
+                <button
+                  onClick={() => setActiveSyncTab('all')}
+                  className={`px-2.5 py-1 rounded-md transition-all ${
+                    activeSyncTab === 'all'
+                      ? 'bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  }`}
+                >
+                  All Streams
+                </button>
+                <button
+                  onClick={() => setActiveSyncTab('downstream')}
+                  className={`px-2.5 py-1 rounded-md transition-all ${
+                    activeSyncTab === 'downstream'
+                      ? 'bg-blue-600 text-white shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-blue-600'
+                  }`}
+                >
+                  ERP ➔ ERX (Demands)
+                </button>
+                <button
+                  onClick={() => setActiveSyncTab('upstream')}
+                  className={`px-2.5 py-1 rounded-md transition-all ${
+                    activeSyncTab === 'upstream'
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-emerald-600'
+                  }`}
+                >
+                  ERX ➔ ERP (Telemetry)
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Downstream stream */}
+              {(activeSyncTab === 'all' || activeSyncTab === 'downstream') && (
+                <div className="p-3 rounded-lg bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10.5px] font-black uppercase tracking-wider text-blue-700 dark:text-blue-400 flex items-center gap-1.5">
+                      <Database className="w-3.5 h-3.5" /> Downstream (ERP to Floor)
+                    </span>
+                    <span className="text-[9px] font-mono font-bold text-blue-600 dark:text-blue-300">Strategy &amp; Demand</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {downstreamItems.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-[11px] font-medium text-slate-700 dark:text-slate-300">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-blue-500 shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Upstream stream */}
+              {(activeSyncTab === 'all' || activeSyncTab === 'upstream') && (
+                <div className="p-3 rounded-lg bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10.5px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                      <Radio className="w-3.5 h-3.5" /> Upstream (Floor to ERP)
+                    </span>
+                    <span className="text-[9px] font-mono font-bold text-emerald-600 dark:text-emerald-300">Physical Truth</span>
+                  </div>
+                  <ul className="space-y-1.5">
+                    {upstreamItems.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-[11px] font-medium text-slate-700 dark:text-slate-300">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Value Proposition Section (5 Pillars Single-Row Strip) */}
-          <section
-            className={`rounded-xl p-2 sm:p-2.5 mb-2 border shadow-xs transition-colors ${
-              isDark
-                ? 'bg-slate-900/60 border-slate-800'
-                : 'bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-sky-50/80 border-emerald-100/90'
-            }`}
-          >
-            <h3 className={`text-center text-xs sm:text-sm font-black mb-1.5 tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-              How <span className="text-emerald-500">Sarvosmi ERX</span> Makes a Difference?
-            </h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 text-center">
-              {/* Pillar 1 */}
-              <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-white/60 dark:bg-slate-800/50 border border-emerald-100/60 dark:border-slate-700/60">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shrink-0">
-                  <Video className="w-3.5 h-3.5" />
-                </div>
-                <div className="text-left">
-                  <h4 className={`text-[10px] font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Real-Time Capture</h4>
-                  <p className={`text-[9px] leading-none ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>As activities happen</p>
-                </div>
-              </div>
-
-              {/* Pillar 2 */}
-              <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-white/60 dark:bg-slate-800/50 border border-amber-100/60 dark:border-slate-700/60">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-amber-600 to-orange-500 text-white flex items-center justify-center shrink-0">
-                  <ClipboardCheck className="w-3.5 h-3.5" />
-                </div>
-                <div className="text-left">
-                  <h4 className={`text-[10px] font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Compares Plans</h4>
-                  <p className={`text-[9px] leading-none ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Actual vs planned</p>
-                </div>
-              </div>
-
-              {/* Pillar 3 */}
-              <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-white/60 dark:bg-slate-800/50 border border-rose-100/60 dark:border-slate-700/60">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-rose-600 to-red-500 text-white flex items-center justify-center shrink-0">
-                  <Bell className="w-3.5 h-3.5" />
-                </div>
-                <div className="text-left">
-                  <h4 className={`text-[10px] font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Real-Time Alerts</h4>
-                  <p className={`text-[9px] leading-none ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Instant violation alert</p>
-                </div>
-              </div>
-
-              {/* Pillar 4 */}
-              <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-white/60 dark:bg-slate-800/50 border border-sky-100/60 dark:border-slate-700/60">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-sky-600 to-blue-500 text-white flex items-center justify-center shrink-0">
-                  <Cog className="w-3.5 h-3.5" />
-                </div>
-                <div className="text-left">
-                  <h4 className={`text-[10px] font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Reduces Manual Work</h4>
-                  <p className={`text-[9px] leading-none ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Negligible manual entry</p>
-                </div>
-              </div>
-
-              {/* Pillar 5 */}
-              <div className="flex items-center space-x-1.5 p-1 rounded-lg bg-white/60 dark:bg-slate-800/50 border border-purple-100/60 dark:border-slate-700/60 sm:col-span-2 md:col-span-1">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-purple-600 to-indigo-500 text-white flex items-center justify-center shrink-0">
-                  <Users className="w-3.5 h-3.5" />
-                </div>
-                <div className="text-left">
-                  <h4 className={`text-[10px] font-extrabold leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>Helps Focus</h4>
-                  <p className={`text-[9px] leading-none ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>Focus on core work</p>
-                </div>
-              </div>
+          {/* ═══════════ HOW ERX MAKES A DIFFERENCE (DESKERA MODULE CARDS) ═══════════ */}
+          <div className="pt-2">
+            <div className="text-center mb-3.5">
+              <span className="text-xs sm:text-sm font-black text-slate-900 dark:text-white">
+                How <span className="text-red-600 italic">Sarvosmi ERX</span><sup className="text-[10px]">TM</sup> Makes a Difference?
+              </span>
             </div>
-          </section>
 
-        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              {erxDifferences.map((diff) => {
+                const Icon = diff.icon;
+                return (
+                  <div
+                    key={diff.id}
+                    className={`rounded-lg border p-3.5 flex flex-col justify-between transition-all duration-200 hover:shadow-lg hover:-translate-y-1 cursor-pointer ${
+                      isDark
+                        ? 'bg-slate-800/80 border-slate-700/80 hover:border-slate-500'
+                        : 'bg-white border-slate-200/90 hover:border-blue-400 shadow-[0_2px_8px_rgba(0,0,0,0.04)]'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex items-center gap-2.5 mb-2">
+                        <div
+                          className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                          style={{
+                            backgroundColor: isDark ? `${diff.color}22` : `${diff.color}15`,
+                            color: diff.color,
+                            border: `1.5px solid ${diff.color}${isDark ? '40' : '30'}`
+                          }}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <h3 className="text-xs font-black text-slate-900 dark:text-white leading-tight">
+                          {diff.title}
+                        </h3>
+                      </div>
+
+                      <p className="text-[10px] font-medium text-slate-600 dark:text-slate-400 leading-relaxed">
+                        {diff.desc}
+                      </p>
+                    </div>
+
+                    <div className="mt-2.5 pt-1.5 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <span
+                        className="text-[8.5px] font-semibold tracking-wide uppercase"
+                        style={{ color: diff.color }}
+                      >
+                        {diff.category}
+                      </span>
+                      <ArrowUpRight className="w-3 h-3 text-slate-400 shrink-0" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* ═══════════ PROVEN ROI & OPERATIONAL VALUE BAR ═══════════ */}
+          <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-2.5 pt-3 border-t border-slate-200 dark:border-slate-800">
+            <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-center">
+              <span className="text-[10px] font-black uppercase text-blue-600 dark:text-blue-400 block">100% Floor Sync</span>
+              <span className="text-[9px] text-slate-500">Zero plan-to-execution drift</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-center">
+              <span className="text-[10px] font-black uppercase text-amber-600 dark:text-amber-400 block">&lt; 15 Min Replacements</span>
+              <span className="text-[9px] text-slate-500">Rapid defect exchange at lines</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-center">
+              <span className="text-[10px] font-black uppercase text-emerald-600 dark:text-emerald-400 block">Zero Paperwork</span>
+              <span className="text-[9px] text-slate-500">100% Barcode Put &amp; Pick</span>
+            </div>
+            <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/80 text-center">
+              <span className="text-[10px] font-black uppercase text-purple-600 dark:text-purple-400 block">+35% Throughput</span>
+              <span className="text-[9px] text-slate-500">Hands-free wearable scanners</span>
+            </div>
+          </div>
+
+          {/* ═══════════ VALUE SUMMARY FOOTER STRIP ═══════════ */}
+          <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+            <span className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
+              PEOPLE &nbsp;|&nbsp; PROCESS &nbsp;|&nbsp; TECHNOLOGY &nbsp;|&nbsp; GROWTH
+            </span>
+            <span className="text-[10px] font-extrabold italic text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <Sparkles className="w-3.5 h-3.5" /> Turning static enterprise plans into flawless daily execution
+            </span>
+          </div>
       </div>
     </section>
   );

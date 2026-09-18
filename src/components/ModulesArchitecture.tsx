@@ -334,10 +334,10 @@ export const ModulesArchitecture: React.FC = () => {
                     width: `${hubCenter.r * 2}px`,
                     height: `${hubCenter.r * 2}px`
                   }}
-                  className="absolute z-10 rounded-full bg-gradient-to-b from-slate-900 via-slate-950 to-black text-white p-2 shadow-2xl border-4 border-amber-500/40 flex flex-col items-center justify-center text-center cursor-pointer group hover:scale-105 transition-transform"
+                  className="absolute z-10 rounded-xl bg-gradient-to-b from-slate-900 via-slate-950 to-black text-white p-2 shadow-2xl border-2 border-amber-500/50 flex flex-col items-center justify-center text-center cursor-pointer group hover:scale-105 transition-transform"
                   onClick={() => handleSelectNode('tx-demand')}
                 >
-                  <div className="absolute inset-0 rounded-full border border-amber-400/30 animate-ping pointer-events-none opacity-40" />
+                  <div className="absolute inset-0 rounded-xl border border-amber-400/30 animate-ping pointer-events-none opacity-40" />
                   <span className="text-[10px] font-black tracking-wide text-red-500 uppercase leading-none">Sarvosmi</span>
                   <span className="text-xs font-black text-emerald-400 tracking-tight leading-none mt-0.5">ERX™</span>
                   <span className="text-[11px] font-bold text-white tracking-widest leading-none mt-0.5">RMSC</span>
@@ -360,7 +360,7 @@ export const ModulesArchitecture: React.FC = () => {
                       onMouseEnter={() => setHoveredNodeId(node.id)}
                       onMouseLeave={() => setHoveredNodeId(null)}
                       onClick={() => handleSelectNode(node.id)}
-                      className={`absolute z-10 w-[145px] p-2 rounded-xl border transition-all duration-200 cursor-pointer ${
+                      className={`absolute z-10 w-[145px] p-2 rounded-lg border transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? isDark
                             ? 'ring-2 ring-purple-500 bg-slate-800 border-purple-400/80 shadow-lg'
@@ -372,7 +372,7 @@ export const ModulesArchitecture: React.FC = () => {
                     >
                       <div className="flex items-center gap-2">
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                          className="w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
                           style={{
                             backgroundColor: isDark ? `${node.color}22` : `${node.color}15`,
                             color: node.color,
@@ -390,7 +390,7 @@ export const ModulesArchitecture: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div className={`mt-1.5 pt-1 border-t flex items-center justify-between ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+                      <div className={`mt-1.5 pt-1 border-t flex items-center justify-between ${isDark ? 'border-slate-200' : 'border-slate-100'}`}>
                         <span className={`text-[8.5px] font-semibold tracking-wide uppercase ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
                           Master Data
                         </span>
@@ -410,7 +410,7 @@ export const ModulesArchitecture: React.FC = () => {
                       onMouseEnter={() => setHoveredNodeId(node.id)}
                       onMouseLeave={() => setHoveredNodeId(null)}
                       onClick={() => handleSelectNode(node.id)}
-                      className={`absolute z-10 w-[150px] p-2 rounded-xl border transition-all duration-200 cursor-pointer ${
+                      className={`absolute z-10 w-[150px] p-2 rounded-lg border transition-all duration-200 cursor-pointer ${
                         isSelected
                           ? isDark
                             ? 'ring-2 ring-blue-500 bg-slate-800 border-blue-400/80 shadow-lg'
@@ -422,7 +422,7 @@ export const ModulesArchitecture: React.FC = () => {
                     >
                       <div className="flex items-center gap-2.5">
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                          className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
                           style={{
                             backgroundColor: isDark ? `${node.color}22` : `${node.color}15`,
                             color: node.color,
@@ -440,7 +440,7 @@ export const ModulesArchitecture: React.FC = () => {
                           </p>
                         </div>
                       </div>
-                      <div className={`mt-2 pt-1.5 border-t flex items-center justify-between ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+                      <div className={`mt-2 pt-1.5 border-t flex items-center justify-between ${isDark ? 'border-slate-200' : 'border-slate-100'}`}>
                         <span className={`text-[9px] font-semibold tracking-wide uppercase ${isDark ? 'text-blue-400' : 'text-blue-700'}`}>
                           Phase 1 Trans.
                         </span>
