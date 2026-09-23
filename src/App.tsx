@@ -34,8 +34,6 @@ function AppContent() {
         {/* Why ERX Infographic Section */}
         <WhyErx />
 
-        <hr className="divider-gradient" />
-
         {/* Questions Section */}
         <QuestionsSection />
 
