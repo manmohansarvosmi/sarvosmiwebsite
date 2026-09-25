@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import {
   BarChart3,
   ShoppingCart,
@@ -23,455 +24,502 @@ import {
   Check,
   QrCode,
   Smartphone,
-  Laptop
+  Laptop,
+  Sparkles,
+  ShieldCheck,
+  Activity,
+  ChevronRight,
+  Play,
+  Pause
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import laptopMobileWhiteImg from '../asset/laptopmobile_white.png';
 
 export const ExecutionSection: React.FC = () => {
   const { isDark } = useTheme();
-  const [activeTab, setActiveTab] = useState<'all' | 'laptop' | 'mobile'>('all');
   const [activeStep, setActiveStep] = useState<number>(0);
+  const [autoPlay, setAutoPlay] = useState<boolean>(true);
 
   const steps = [
-    { id: 1, title: 'Raw Material demand generation against production plans', icon: BarChart3, color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/30' },
-    { id: 2, title: 'Procurement', icon: ShoppingCart, color: 'text-blue-500 bg-blue-500/10 border-blue-500/30' },
-    { id: 3, title: 'Material receipts', icon: Truck, color: 'text-indigo-500 bg-indigo-500/10 border-indigo-500/30' },
-    { id: 4, title: 'Unloading', icon: Package, color: 'text-amber-500 bg-amber-500/10 border-amber-500/30' },
-    { id: 5, title: 'Inward QC', icon: ClipboardCheck, color: 'text-rose-500 bg-rose-500/10 border-rose-500/30' },
-    { id: 6, title: 'Putting', icon: Layers, color: 'text-teal-500 bg-teal-500/10 border-teal-500/30' },
-    { id: 7, title: 'Production plan execution', icon: Cog, color: 'text-slate-500 bg-slate-500/10 border-slate-500/30' },
-    { id: 8, title: 'Picking & delivery to production', icon: MoveRight, color: 'text-red-500 bg-red-500/10 border-red-500/30' },
-    { id: 9, title: 'Returns & rejections', icon: RotateCcw, color: 'text-orange-500 bg-orange-500/10 border-orange-500/30' },
-    { id: 10, title: 'Material re-issue', icon: RefreshCw, color: 'text-purple-500 bg-purple-500/10 border-purple-500/30' },
+    { id: 1, title: 'RM Demand Generation', desc: 'Against ERP plans', icon: BarChart3, color: '#2563eb' },
+    { id: 2, title: 'Procurement & PO Sync', desc: 'PO & supplier validation', icon: ShoppingCart, color: '#3b82f6' },
+    { id: 3, title: 'Material Gate Receipts', desc: 'Vehicle & gate entry', icon: Truck, color: '#6366f1' },
+    { id: 4, title: 'Unloading & Staging', desc: 'Dock receipt & staging', icon: Package, color: '#d97706' },
+    { id: 5, title: 'Inward Quality QC', desc: 'Parametric inspection', icon: ClipboardCheck, color: '#e11d48' },
+    { id: 6, title: 'Put-Away to Bins', desc: 'Barcode rack put-away', icon: Layers, color: '#0d9488' },
+    { id: 7, title: 'Production Plan Execution', desc: 'Live PPE & BOM control', icon: Cog, color: '#059669' },
+    { id: 8, title: 'Picking & Line Delivery', desc: 'Kitting & FIFO issue', icon: MoveRight, color: '#dc2626' },
+    { id: 9, title: 'Returns & Rejections', desc: 'Discrepancy quarantine', icon: RotateCcw, color: '#ea580c' },
+    { id: 10, title: 'Material Re-Issue', desc: 'Scrap & rework issue', icon: RefreshCw, color: '#9333ea' },
   ];
 
-  const productionPlans = [
-    { id: 'PLAN_3', product: 'Split AC Outdoor Unit', qty: 3, schedule: '11 Sep 2026', status: 'Non Executable', statusColor: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400 border-red-200 dark:border-red-800' },
-    { id: 'PLAN_4', product: 'Split AC Outdoor Unit', qty: 3, schedule: '11 Sep 2026', status: 'Non Executable', statusColor: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400 border-red-200 dark:border-red-800' },
-    { id: 'PLAN_5', product: 'Split AC Outdoor Unit', qty: 3, schedule: '12 Sep 2026', status: 'Confirmed', statusColor: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
-    { id: 'PLAN_6', product: 'Split AC Outdoor Unit', qty: 3, schedule: '12 Sep 2026', status: 'Confirmed', statusColor: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800' },
-    { id: 'PLAN_7', product: 'Split AC Outdoor Unit', qty: 3, schedule: '13 Sep 2026', status: 'Non Executable', statusColor: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400 border-red-200 dark:border-red-800' },
-    { id: 'PLAN_8', product: 'Split AC Outdoor Unit', qty: 3, schedule: '13 Sep 2026', status: 'Non Executable', statusColor: 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400 border-red-200 dark:border-red-800' },
-  ];
+  // Auto-advance steps softly when autoPlay is enabled
+  useEffect(() => {
+    if (!autoPlay) return;
+    const timer = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % steps.length);
+    }, 3200);
+    return () => clearInterval(timer);
+  }, [autoPlay, steps.length]);
 
   return (
-    <section id="execution-section" className="w-full section-padding px-4 sm:px-8 lg:px-12 xl:px-16 transition-colors duration-300 relative">
-      <div className="w-full max-w-7xl mx-auto flex flex-col gap-6">
-          {/* ═══════════ HEADER ═══════════ */}
-          <div
-            className={`px-4 sm:px-8 py-5 border-b flex flex-col lg:flex-row items-center justify-between gap-4 relative overflow-hidden ${
-              isDark ? 'bg-slate-950/60 border-slate-800' : 'bg-white/80 border-slate-200/80 backdrop-blur-md'
-            }`}
+    <section
+      id="execution-section"
+      className="w-full py-6 sm:py-8 px-3 sm:px-6 lg:px-8 transition-colors duration-300 relative overflow-hidden"
+      style={{
+        background: isDark
+          ? 'linear-gradient(180deg, #090d16 0%, #0d131f 50%, #091218 100%)'
+          : 'linear-gradient(135deg, #f0f7fe 0%, #ffffff 50%, #f0fdf4 100%)',
+      }}
+    >
+      {/* ── Ambient Background Motion Orbs ── */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <motion.div
+          animate={{
+            scale: [1, 1.15, 1],
+            opacity: [0.12, 0.22, 0.12],
+            x: [0, 20, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400 rounded-full blur-3xl"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.10, 0.20, 0.10],
+            x: [0, -25, 0],
+            y: [0, 25, 0],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+          className="absolute -bottom-24 -right-24 w-96 h-96 bg-emerald-400 rounded-full blur-3xl"
+        />
+        
+        {/* Subtle dot matrix patterns */}
+        <div
+          className="absolute top-4 right-6 w-32 h-32 opacity-20"
+          style={{
+            backgroundImage: 'radial-gradient(#059669 1.5px, transparent 1.5px)',
+            backgroundSize: '14px 14px',
+          }}
+        />
+        <div
+          className="absolute top-4 left-6 w-32 h-32 opacity-20"
+          style={{
+            backgroundImage: 'radial-gradient(#2563eb 1.5px, transparent 1.5px)',
+            backgroundSize: '14px 14px',
+          }}
+        />
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto flex flex-col gap-4 sm:gap-5 relative z-10">
+        
+        {/* ═══════════ ANIMATED COMPACT HEADER ═══════════ */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex flex-col items-center justify-center text-center"
+        >
+          {/* Top Pill Badge */}
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-700 dark:text-emerald-300 text-[10px] font-black uppercase tracking-wider mb-1.5 shadow-2xs cursor-default"
           >
-            {/* Left Brand Badge */}
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-black text-xl">
-                ERX
-              </div>
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm font-extrabold italic text-red-600">Sarvosmi</span>
-                  <span className="text-xs font-black text-emerald-600 tracking-wider">ERX™ RMSC</span>
-                </div>
-                <p className="text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                  Raw Material Supply Chain
-                </p>
-              </div>
-            </div>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            <span>REAL-TIME SUPPLY CHAIN EXECUTION</span>
+          </motion.div>
 
-            {/* Center Main Title */}
-            <div className="text-center max-w-2xl">
-              <h2 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tight text-slate-900 dark:text-white">
-                End-to-End Raw Material Supply Chain Execution
-              </h2>
-              <p className="text-xs sm:text-sm font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
-                From Plan to Production — All in One Platform
-              </p>
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug text-slate-900 dark:text-white">
+            End-to-End <span className="text-emerald-600 dark:text-emerald-400">ERX™</span> Raw Material Execution
+          </h2>
 
-              {/* 4 Feature Tags */}
-              <div className="flex flex-wrap items-center justify-center gap-2 mt-3">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-extrabold bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30">
-                  <Zap className="w-3.5 h-3.5 text-emerald-500" /> Real-Time Visibility
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-extrabold bg-rose-500/10 text-rose-700 dark:text-rose-300 border border-rose-500/30">
-                  <Target className="w-3.5 h-3.5 text-rose-500" /> Accurate Control
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-extrabold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30">
-                  <Users className="w-3.5 h-3.5 text-blue-500" /> Connected Teams
-                </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-[11px] font-extrabold bg-green-500/10 text-green-700 dark:text-green-300 border border-green-500/30">
-                  <TrendingUp className="w-3.5 h-3.5 text-green-500" /> Higher Productivity
-                </span>
-              </div>
-            </div>
+          <p className="text-[11.5px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xl font-medium">
+            Bridging ERP planning to shop-floor reality with live barcode scanning and paperless execution.
+          </p>
 
-            {/* Right Slogan */}
-            <div className="text-right hidden sm:block">
-              <p className="text-xs font-black italic tracking-wide text-slate-700 dark:text-slate-300 font-serif">
-                Smarter Materials
-              </p>
-              <p className="text-sm font-black italic text-emerald-600 dark:text-emerald-400 font-serif">
-                Stronger Tomorrow
-              </p>
-            </div>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 64 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="mt-1.5 h-1 rounded-full bg-gradient-to-r from-blue-600 via-teal-500 to-emerald-500"
+          />
+
+          {/* 4 Feature Badges with staggered hover */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 mt-2.5">
+            {[
+              { label: 'Real-Time Visibility', icon: Zap, color: 'text-blue-600', bg: 'text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-900/60' },
+              { label: 'Accurate Control', icon: Target, color: 'text-rose-600', bg: 'text-rose-700 dark:text-rose-300 border-rose-200 dark:border-rose-900/60' },
+              { label: 'Connected Teams', icon: Users, color: 'text-indigo-600', bg: 'text-indigo-700 dark:text-indigo-300 border-indigo-200 dark:border-indigo-900/60' },
+              { label: 'Higher Productivity', icon: TrendingUp, color: 'text-emerald-600', bg: 'text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-900/60' },
+            ].map((tag, i) => {
+              const TagIcon = tag.icon;
+              return (
+                <motion.span
+                  key={i}
+                  whileHover={{ scale: 1.06, y: -1 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-white dark:bg-slate-900 ${tag.bg} border shadow-2xs cursor-default`}
+                >
+                  <TagIcon className={`w-3 h-3 ${tag.color}`} /> {tag.label}
+                </motion.span>
+              );
+            })}
           </div>
+        </motion.div>
 
-          {/* ═══════════ MAIN CONTENT GRID ═══════════ */}
-          <div className="p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-            
-            {/* ── LEFT: 10-Step Sequential Execution Flow ── */}
-            <div className="lg:col-span-3 flex flex-col gap-2">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-slate-800">
-                <span className="text-xs font-black uppercase tracking-wider text-slate-600 dark:text-slate-400">
-                  10-Step Execution Flow
-                </span>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-xs bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                  Auto-Sync
-                </span>
+        {/* ═══════════ MAIN 3-COLUMN WORKFLOW GRID ═══════════ */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 sm:gap-4 items-stretch">
+          
+          {/* ── LEFT COLUMN: ANIMATED 10-STEP TIMELINE ── */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="lg:col-span-4 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs relative overflow-hidden"
+          >
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-blue-500/10 text-blue-600 flex items-center justify-center font-bold">
+                    <Activity className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h3 className="font-grotesk font-black text-xs text-slate-900 dark:text-white leading-tight">
+                      10-Step Execution Flow
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => setAutoPlay(!autoPlay)}
+                    title={autoPlay ? 'Pause Auto-Cycle' : 'Play Auto-Cycle'}
+                    className="p-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-600 dark:text-slate-300 transition-colors"
+                  >
+                    {autoPlay ? <Pause className="w-2.5 h-2.5" /> : <Play className="w-2.5 h-2.5" />}
+                  </button>
+                  <span className="px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider bg-emerald-50 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    AUTO-SYNC
+                  </span>
+                </div>
               </div>
 
-              <div className="space-y-1.5">
+              {/* Vertical Stepper List */}
+              <div className="relative pl-1.5 space-y-1">
+                <div className="absolute left-[15px] top-2 bottom-2 w-0.5 bg-slate-100 dark:bg-slate-800" />
+
                 {steps.map((step, idx) => {
                   const Icon = step.icon;
                   const isSelected = activeStep === idx;
                   return (
-                    <div
+                    <motion.div
                       key={step.id}
-                      onClick={() => setActiveStep(idx)}
-                      className={`flex items-center gap-2.5 p-2 rounded-md border transition-all cursor-pointer ${
+                      onClick={() => {
+                        setActiveStep(idx);
+                        setAutoPlay(false);
+                      }}
+                      whileHover={{ x: 3 }}
+                      transition={{ duration: 0.15 }}
+                      className={`relative flex items-center gap-2 py-1 px-1.5 rounded-lg transition-colors cursor-pointer group ${
                         isSelected
-                          ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500 shadow-sm scale-[1.02]'
-                          : 'bg-white/80 dark:bg-slate-800/60 border-slate-200/80 dark:border-slate-700/60 hover:border-slate-300 dark:hover:border-slate-600'
+                          ? 'bg-blue-50/90 dark:bg-blue-950/50 shadow-2xs'
+                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/60'
                       }`}
                     >
-                      <div
-                        className={`w-6 h-6 rounded-xs flex items-center justify-center text-[10px] font-black shrink-0 ${
-                          isSelected ? 'bg-emerald-600 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300'
+                      {/* Active Indicator Bar */}
+                      {isSelected && (
+                        <motion.div
+                          layoutId="activeStepBorder"
+                          className="absolute left-0 top-1 bottom-1 w-1 rounded-r-full bg-blue-600"
+                          transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                        />
+                      )}
+
+                      {/* Step Number Dot */}
+                      <motion.div
+                        animate={isSelected ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-black shrink-0 z-10 transition-colors ${
+                          isSelected
+                            ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-200 dark:ring-blue-900'
+                            : 'bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
                         }`}
                       >
                         {step.id}
+                      </motion.div>
+
+                      {/* Icon */}
+                      <div
+                        className="w-5 h-5 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
+                        style={{
+                          backgroundColor: `${step.color}15`,
+                          color: step.color,
+                        }}
+                      >
+                        <Icon className="w-3 h-3" />
                       </div>
-                      <div className={`p-1.5 rounded-xs border shrink-0 ${step.color}`}>
-                        <Icon className="w-3.5 h-3.5" />
+
+                      {/* Title */}
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-[11px] font-bold leading-tight truncate transition-colors ${
+                            isSelected ? 'text-blue-700 dark:text-blue-400 font-extrabold' : 'text-slate-800 dark:text-slate-200'
+                          }`}
+                        >
+                          {step.title}
+                        </p>
                       </div>
-                      <p className="text-[11px] font-bold leading-tight text-slate-800 dark:text-slate-200 line-clamp-2">
-                        {step.title}
-                      </p>
-                    </div>
+
+                      {isSelected && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <ChevronRight className="w-3 h-3 text-blue-600 shrink-0" />
+                        </motion.div>
+                      )}
+                    </motion.div>
                   );
                 })}
+              </div>
+            </div>
 
-                <div className="mt-2 p-2.5 rounded-md bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-transparent border border-emerald-500/30 flex items-center gap-2">
-                  <Radio className="w-4 h-4 text-emerald-500 animate-pulse shrink-0" />
-                  <span className="text-[11px] font-extrabold text-emerald-700 dark:text-emerald-300">
-                    ...in real-time with appropriate alerts
+            {/* Bottom Alert */}
+            <div className="mt-2 p-1.5 rounded-lg bg-blue-50/80 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center gap-1.5">
+              <Radio className="w-3 h-3 text-blue-600 animate-pulse shrink-0" />
+              <p className="text-[10px] font-bold text-blue-950 dark:text-blue-200 leading-tight">
+                Live shop-floor telemetry broadcast
+              </p>
+            </div>
+          </motion.div>
+
+          {/* ── CENTER COLUMN: MOTION-ENHANCED DEVICE SHOWCASE ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="lg:col-span-5 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs relative group overflow-hidden"
+          >
+            {/* Top Status Header */}
+            <div>
+              <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-1.5">
+                  <span className="px-2 py-0.5 rounded-md bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono font-bold text-[9px] border border-blue-200 dark:border-blue-800">
+                    💻 WEB PPE PORTAL
+                  </span>
+                  <span className="text-slate-300 text-[10px] font-bold">↔</span>
+                  <span className="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono font-bold text-[9px] border border-emerald-200 dark:border-emerald-800">
+                    📱 MOBILE HNSC
                   </span>
                 </div>
+
+                <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 text-[9px] font-extrabold border border-emerald-500/25">
+                  <span className="relative flex h-1.5 w-1.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                  </span>
+                  <span>0s LATENCY</span>
+                </div>
               </div>
+
+              {/* Showcase Image on Clean Studio Background with Gentle Breathing Float */}
+              <motion.div
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative flex items-center justify-center p-1.5 sm:p-2.5 rounded-xl bg-gradient-to-b from-slate-50/50 via-white to-slate-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border border-slate-100 dark:border-slate-800 overflow-hidden"
+              >
+                {/* Ambient Soft Glow Behind Image */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-emerald-500/8 via-transparent to-blue-500/8 pointer-events-none" />
+
+                <motion.img
+                  src={laptopMobileWhiteImg}
+                  alt="Sarvosmi ERX RMSC - Desktop Production Plans & Mobile Barcode Inwarding"
+                  whileHover={{ scale: 1.03 }}
+                  transition={{ duration: 0.4 }}
+                  className="w-full max-w-[390px] h-auto object-contain drop-shadow-[0_12px_24px_rgba(15,23,42,0.10)] dark:drop-shadow-[0_12px_24px_rgba(0,0,0,0.6)] cursor-pointer"
+                  loading="eager"
+                />
+              </motion.div>
             </div>
 
-            {/* ── CENTER: Live Platform Mockup (Laptop & Mobile) ── */}
-            <div className="lg:col-span-6 flex flex-col gap-4">
-              
-              {/* Device Mode Selector */}
-              <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800/80 p-1 rounded-md border border-slate-200 dark:border-slate-700">
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => setActiveTab('all')}
-                    className={`px-3 py-1 rounded-xs text-xs font-black transition-all ${
-                      activeTab === 'all'
-                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs'
-                        : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-                    }`}
-                  >
-                    All Devices
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('laptop')}
-                    className={`flex items-center gap-1.5 px-3 py-1 rounded-xs text-xs font-black transition-all ${
-                      activeTab === 'laptop'
-                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs'
-                        : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-                    }`}
-                  >
-                    <Laptop className="w-3.5 h-3.5" /> Web Console
-                  </button>
-                  <button
-                    onClick={() => setActiveTab('mobile')}
-                    className={`flex items-center gap-1.5 px-3 py-1 rounded-xs text-xs font-black transition-all ${
-                      activeTab === 'mobile'
-                        ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-xs'
-                        : 'text-slate-500 hover:text-slate-800 dark:hover:text-slate-200'
-                    }`}
-                  >
-                    <Smartphone className="w-3.5 h-3.5" /> Mobile HNSC
-                  </button>
-                </div>
-                <div className="flex items-center gap-2 px-2 text-[10px] font-bold text-slate-500">
-                  <span className="w-2 h-2 rounded-xs bg-emerald-500 animate-ping" />
-                  Live Sync Active
-                </div>
-              </div>
+            {/* Bottom 2 Feature Badges */}
+            <div className="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-[10px]">
+              <motion.div
+                whileHover={{ y: -2 }}
+                className="p-1.5 rounded-lg bg-blue-500/5 dark:bg-blue-950/30 border border-blue-500/15 flex items-center gap-1.5"
+              >
+                <Laptop className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                <span className="font-extrabold text-slate-800 dark:text-slate-200 truncate">Web PPE Plans &amp; Gap</span>
+              </motion.div>
 
-              {/* Devices Container */}
-              <div className="relative flex flex-col md:flex-row items-center justify-center gap-4">
-                
-                {/* 1. LAPTOP MOCKUP */}
-                {(activeTab === 'all' || activeTab === 'laptop') && (
-                  <div className={`w-full ${activeTab === 'all' ? 'md:w-3/5' : 'w-full'} transition-all`}>
-                    <div className="bg-slate-800 rounded-t-md p-2 pb-1 shadow-2xl border-4 border-slate-800">
-                      {/* Laptop Screen Header */}
-                      <div className="bg-white dark:bg-slate-900 rounded-xs p-2 text-slate-800 dark:text-slate-200 text-xs shadow-inner">
-                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-200 dark:border-slate-800 mb-2">
-                          <div className="flex items-center gap-1.5">
-                            <span className="font-extrabold italic text-red-600 text-[10px]">Sarvosmi</span>
-                            <span className="text-[9px] font-bold text-emerald-600">ERX™ RMSC</span>
-                          </div>
-                          <span className="text-[9px] font-semibold text-slate-500">Jayant Vaidya (PPE Mgr)</span>
-                        </div>
-
-                        {/* Top 4 Stats */}
-                        <div className="grid grid-cols-4 gap-1.5 mb-2.5">
-                          <div className="p-1.5 rounded-md bg-slate-100 dark:bg-slate-800 text-center">
-                            <p className="text-[8px] text-slate-500 font-bold uppercase">Total Plans</p>
-                            <p className="text-sm font-black text-slate-900 dark:text-white">20</p>
-                          </div>
-                          <div className="p-1.5 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-center">
-                            <p className="text-[8px] text-emerald-600 dark:text-emerald-400 font-bold uppercase">In Progress</p>
-                            <p className="text-sm font-black text-emerald-600 dark:text-emerald-400">8</p>
-                          </div>
-                          <div className="p-1.5 rounded-md bg-blue-50 dark:bg-blue-950/50 text-center">
-                            <p className="text-[8px] text-blue-600 dark:text-blue-400 font-bold uppercase">Completed</p>
-                            <p className="text-sm font-black text-blue-600 dark:text-blue-400">10</p>
-                          </div>
-                          <div className="p-1.5 rounded-md bg-rose-50 dark:bg-rose-950/50 text-center">
-                            <p className="text-[8px] text-rose-600 dark:text-rose-400 font-bold uppercase">Shortage</p>
-                            <p className="text-sm font-black text-rose-600 dark:text-rose-400">2</p>
-                          </div>
-                        </div>
-
-                        {/* Mini Table */}
-                        <div className="overflow-x-auto">
-                          <p className="text-[9px] font-black uppercase text-slate-700 dark:text-slate-300 mb-1">
-                            Production Plan Execution
-                          </p>
-                          <table className="w-full text-[8.5px] border-collapse">
-                            <thead>
-                              <tr className="bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 font-bold text-left">
-                                <th className="p-1">Plan ID</th>
-                                <th className="p-1">Product</th>
-                                <th className="p-1 text-center">Qty</th>
-                                <th className="p-1">Schedule</th>
-                                <th className="p-1 text-right">Status</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
-                              {productionPlans.slice(0, 4).map((plan) => (
-                                <tr key={plan.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40">
-                                  <td className="p-1 font-bold text-emerald-600">{plan.id}</td>
-                                  <td className="p-1 font-medium">{plan.product}</td>
-                                  <td className="p-1 text-center font-bold">{plan.qty}</td>
-                                  <td className="p-1 text-slate-500">{plan.schedule}</td>
-                                  <td className="p-1 text-right">
-                                    <span className={`px-1.5 py-0.5 rounded text-[7.5px] font-extrabold border ${plan.statusColor}`}>
-                                      {plan.status}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Laptop Base */}
-                    <div className="bg-slate-700 h-3 rounded-b-md shadow-md flex items-center justify-center">
-                      <div className="w-16 h-1 bg-slate-500 rounded-full" />
-                    </div>
-                  </div>
-                )}
-
-                {/* 2. MOBILE PHONE MOCKUP */}
-                {(activeTab === 'all' || activeTab === 'mobile') && (
-                  <div className={`w-full ${activeTab === 'all' ? 'md:w-2/5' : 'max-w-xs mx-auto'} transition-all`}>
-                    <div className="bg-slate-900 p-2.5 rounded-md border-4 border-slate-800 shadow-2xl relative">
-                      {/* Notch */}
-                      <div className="w-20 h-3 bg-slate-800 rounded-xs mx-auto mb-2" />
-                      
-                      {/* Screen Content */}
-                      <div className="bg-white dark:bg-slate-900 rounded-xs p-2.5 text-slate-800 dark:text-slate-200 shadow-inner text-xs">
-                        <div className="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-800 mb-2">
-                          <span className="font-extrabold italic text-red-600 text-[10px]">Sarvosmi <span className="text-emerald-600">ERX™ HNSC</span></span>
-                          <span className="text-[8px] font-mono text-slate-400">1:22 PM</span>
-                        </div>
-
-                        {/* Barcode Banner */}
-                        <div className="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 rounded-xs p-2 mb-2 flex items-center justify-between">
-                          <div>
-                            <p className="text-[7.5px] font-black uppercase text-emerald-800 dark:text-emerald-300">GRN Barcode</p>
-                            <p className="text-[9px] font-mono font-bold text-slate-700 dark:text-slate-300">ORG0000001-S001-CIN-02-2026-0001</p>
-                          </div>
-                          <QrCode className="w-6 h-6 text-emerald-600 shrink-0" />
-                        </div>
-
-                        {/* Supplier Info */}
-                        <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xs p-2 mb-2 space-y-0.5 text-[8.5px]">
-                          <p className="font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight">Supplier Details</p>
-                          <p><span className="text-slate-400">Org:</span> <strong className="text-slate-700 dark:text-slate-300">Aldahome Appliances</strong></p>
-                          <p><span className="text-slate-400">Contact:</span> Khursheed Alam</p>
-                          <p><span className="text-slate-400">Phone:</span> 9971841909</p>
-                        </div>
-
-                        {/* Transporter Info */}
-                        <div className="bg-slate-50 dark:bg-slate-800/60 rounded-xs p-2 mb-2.5 space-y-0.5 text-[8.5px]">
-                          <p className="font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight">Transporter Details</p>
-                          <p><span className="text-slate-400">Transport:</span> KK Transports</p>
-                          <p><span className="text-slate-400">Driver:</span> Akshay (LMV)</p>
-                          <p><span className="text-slate-400">Vehicle:</span> MH21HU2726</p>
-                        </div>
-
-                        <button className="w-full py-1.5 rounded-xs bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[10px] shadow-sm flex items-center justify-center gap-1">
-                          <CheckCircle2 className="w-3 h-3" /> View Items &amp; Verify
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-              </div>
+              <motion.div
+                whileHover={{ y: -2 }}
+                className="p-1.5 rounded-lg bg-emerald-500/5 dark:bg-emerald-950/30 border border-emerald-500/15 flex items-center gap-1.5"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span className="font-extrabold text-slate-800 dark:text-slate-200 truncate">Mobile CIN Barcode</span>
+              </motion.div>
             </div>
+          </motion.div>
 
-            {/* ── RIGHT: Wearable Mobile Computer & Ring Barcode Scanner ── */}
-            <div className="lg:col-span-3 flex flex-col gap-3">
-              {/* Accurate & Helps to Card */}
-              <div className="bg-gradient-to-br from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/30 rounded-md p-3.5 shadow-sm">
-                <div className="flex items-center gap-2 mb-2 text-emerald-700 dark:text-emerald-300">
-                  <Target className="w-5 h-5 text-emerald-600" />
-                  <h3 className="text-xs font-black uppercase tracking-wider">Accurate &amp; Helps To</h3>
+          {/* ── RIGHT COLUMN: CAPABILITIES & WEARABLE SCANNER ── */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:col-span-3 rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs relative"
+          >
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-2 mb-2 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <h3 className="font-grotesk font-black text-xs text-slate-900 dark:text-white leading-tight">
+                      Accuracy &amp; Impact
+                    </h3>
+                  </div>
                 </div>
-                <ul className="space-y-1.5 text-[11px] font-semibold text-slate-700 dark:text-slate-300">
-                  <li className="flex items-start gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Identify Constraints</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Predictive Forecasting and Planning</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>Real-Time Alerts &amp; Reports</span>
-                  </li>
-                  <li className="flex items-start gap-1.5">
-                    <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                    <span>All activities are time bound</span>
-                  </li>
-                </ul>
+                <span className="px-2 py-0.5 rounded-full text-[8.5px] font-black uppercase tracking-wider bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                  99.8% ACCURATE
+                </span>
               </div>
 
-              {/* Wearable Ring Scanner Visual Card */}
-              <div className="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-md p-4 shadow-xl border border-emerald-500/40 relative overflow-hidden flex flex-col justify-between">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
-                
-                <div>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-xs bg-emerald-500/20 text-emerald-400 text-[9px] font-black uppercase tracking-widest border border-emerald-500/30 mb-2">
-                    <Scan className="w-3 h-3" /> Hands-Free Tech
-                  </div>
-                  <h4 className="text-sm font-black text-white leading-snug">
-                    Wearable Mobile Computer &amp; Ring Barcode Scanner
-                  </h4>
-                  <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
-                    Dock and store operators scan barcodes directly from a fingertip ring scanner while keeping both hands completely free for heavy material handling.
-                  </p>
+              {/* Accuracy Checklist */}
+              <div className="space-y-1.5 mb-2.5">
+                {[
+                  'Identify shortages early',
+                  'Predictive scheduling',
+                  'Sub-second deviation alerts',
+                  '100% Time-bound execution',
+                ].map((item, i) => (
+                  <motion.div
+                    key={i}
+                    whileHover={{ x: 2 }}
+                    className="flex items-center gap-2 p-1.5 rounded-lg bg-slate-50 dark:bg-slate-800/50 transition-colors"
+                  >
+                    <div className="w-3.5 h-3.5 rounded-full bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </div>
+                    <span className="text-[10.5px] font-bold text-slate-700 dark:text-slate-300 leading-tight">
+                      {item}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Wearable Ring Barcode Scanner Showcase Box with Animated Laser Beam */}
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                className="p-2.5 rounded-xl bg-gradient-to-b from-slate-900 to-slate-950 text-white shadow-md border border-slate-800 relative overflow-hidden"
+              >
+                <div className="flex items-center gap-1 mb-1">
+                  <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 text-[8px] font-black uppercase tracking-wider border border-emerald-500/30">
+                    <Scan className="w-2.5 h-2.5 inline mr-0.5" /> Wearable Tech
+                  </span>
                 </div>
+                <h4 className="text-[11px] font-black text-white leading-tight">
+                  Ring Barcode Scanner
+                </h4>
+                <p className="text-[9.5px] text-slate-400 mt-0.5 leading-tight">
+                  Hands-free barcode scanning for dock &amp; store ops.
+                </p>
 
                 {/* Laser Barcode Simulation */}
-                <div className="my-3 p-3 bg-slate-800/80 rounded-xs border border-slate-700 flex items-center justify-between relative overflow-hidden">
-                  <div className="flex items-center gap-2">
-                    <QrCode className="w-8 h-8 text-emerald-400" />
+                <div className="mt-1.5 p-1.5 rounded-lg bg-slate-800/90 text-white flex items-center justify-between relative overflow-hidden border border-slate-700/80">
+                  <div className="flex items-center gap-1.5">
+                    <QrCode className="w-4 h-4 text-emerald-400" />
                     <div>
-                      <p className="text-[9px] font-mono text-emerald-300 font-bold">PRDSHP00002</p>
-                      <p className="text-[8px] text-slate-400">Split AC Outdoor Unit (QTY: 3)</p>
+                      <p className="text-[8px] font-mono font-bold text-emerald-300">ORG0000001-CIN</p>
+                      <p className="text-[7px] text-slate-400">Barcode Verified</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-1 text-[9px] font-bold text-red-400 animate-pulse">
-                    <span className="w-1.5 h-1.5 rounded-xs bg-red-500" /> Laser Active
+                  <div className="flex items-center gap-1 text-[7.5px] font-bold text-red-400">
+                    <span className="w-1 h-1 rounded-full bg-red-500 animate-ping" /> Laser
                   </div>
-                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1.5px] bg-red-500 shadow-[0_0_8px_#ef4444]" />
-                </div>
 
-                <div className="flex items-center gap-2 pt-2 border-t border-slate-800 text-[10px] font-bold text-slate-400">
-                  <Hand className="w-4 h-4 text-emerald-400" />
-                  <span>100% Free hands for picking &amp; putting</span>
+                  {/* Animated laser beam sweep */}
+                  <motion.div
+                    animate={{ x: ['-100%', '100%'] }}
+                    transition={{ duration: 1.8, repeat: Infinity, ease: 'linear' }}
+                    className="absolute inset-y-0 w-8 bg-gradient-to-r from-transparent via-red-500/70 to-transparent"
+                  />
+                  <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[1px] bg-red-500 shadow-[0_0_6px_#ef4444]" />
                 </div>
-              </div>
-
+              </motion.div>
             </div>
 
+            {/* Bottom Tag */}
+            <div className="mt-2 p-1.5 rounded-lg bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-900/50 flex items-center gap-1.5 text-[9.5px] font-bold text-emerald-900 dark:text-emerald-200">
+              <Hand className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+              <span>100% Free hands for material handling</span>
+            </div>
+          </motion.div>
+
+        </div>
+
+        {/* ═══════════ COMPACT PROCESS BENEFITS (5 TILES WITH HOVER SPRING) ═══════════ */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="p-3 sm:p-3.5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 shadow-xs"
+        >
+          <div className="flex items-center justify-between mb-2.5 flex-wrap gap-1">
+            <div className="flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <h4 className="text-[11px] sm:text-xs font-black uppercase tracking-wider text-slate-900 dark:text-white">
+                Process Optimization Results
+              </h4>
+            </div>
+            <span className="text-[9.5px] font-bold text-slate-400">
+              Across 50+ manufacturing plants
+            </span>
           </div>
 
-          {/* ═══════════ BOTTOM BENEFITS BAR ═══════════ */}
-          <div className="p-4 sm:p-6 border-t border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-950/70">
-            <p className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3 text-center sm:text-left">
-              The key benefits being optimizing of all processes resulting in.....
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-              
-              <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-emerald-500/10 text-emerald-600 flex items-center justify-center shrink-0">
-                  <Coins className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  Lower operational &amp; transactional costs
-                </p>
-              </div>
-
-              <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-blue-500/10 text-blue-600 flex items-center justify-center shrink-0">
-                  <Award className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  Better quality and negligible raw material wastages or leakages
-                </p>
-              </div>
-
-              <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-purple-500/10 text-purple-600 flex items-center justify-center shrink-0">
-                  <TrendingUp className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  Higher efficiency, productivity and profitability due to...
-                </p>
-              </div>
-
-              <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0">
-                  <Scan className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  Implementation of Put &amp; Pick-to-Barcode technology using Wearables
-                </p>
-              </div>
-
-              <div className="p-3 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-md bg-teal-500/10 text-teal-600 flex items-center justify-center shrink-0">
-                  <Hand className="w-5 h-5" />
-                </div>
-                <p className="text-xs font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                  Both hands of Dock &amp; Store Operators are free for picking &amp; putting
-                </p>
-              </div>
-
-            </div>
-
-            {/* Footer Tag */}
-            <div className="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-center">
-              <span className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400 dark:text-slate-500">
-                PEOPLE &nbsp;|&nbsp; PROCESS &nbsp;|&nbsp; TECHNOLOGY &nbsp;|&nbsp; GROWTH
-              </span>
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 sm:gap-2.5">
+            {[
+              { title: 'Lower Costs', desc: 'Reduced overhead', icon: Coins, color: 'bg-blue-600', border: 'border-blue-100 dark:border-slate-800', bg: 'bg-blue-50/60' },
+              { title: 'Zero Leakage', desc: 'Zero material waste', icon: Award, color: 'bg-emerald-600', border: 'border-emerald-100 dark:border-slate-800', bg: 'bg-emerald-50/60' },
+              { title: 'High Efficiency', desc: 'Higher margins', icon: TrendingUp, color: 'bg-indigo-600', border: 'border-indigo-100 dark:border-slate-800', bg: 'bg-indigo-50/60' },
+              { title: 'Pick-to-Barcode', desc: 'Directed put & pick', icon: Scan, color: 'bg-amber-600', border: 'border-amber-100 dark:border-slate-800', bg: 'bg-amber-50/60' },
+              { title: '100% Free Hands', desc: 'Ergonomic handling', icon: Hand, color: 'bg-teal-600', border: 'border-teal-100 dark:border-slate-800', bg: 'bg-teal-50/60' },
+            ].map((card, i) => {
+              const CardIcon = card.icon;
+              return (
+                <motion.div
+                  key={i}
+                  whileHover={{ y: -3, scale: 1.02 }}
+                  transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  className={`p-2.5 rounded-xl ${card.bg} dark:bg-slate-800/50 border ${card.border} flex items-center gap-2 shadow-2xs cursor-default`}
+                >
+                  <div className={`w-7 h-7 rounded-lg ${card.color} text-white flex items-center justify-center shrink-0 shadow-xs`}>
+                    <CardIcon className="w-3.5 h-3.5" />
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-black text-slate-900 dark:text-white leading-tight">{card.title}</p>
+                    <p className="text-[9.5px] text-slate-500 dark:text-slate-400 leading-tight">{card.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
+        </motion.div>
+
       </div>
     </section>
   );

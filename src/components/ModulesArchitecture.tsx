@@ -95,51 +95,32 @@ export const ModulesArchitecture: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Central Hub Coordinates in 1240x710 canvas
-  const hubCenter = { x: 610, y: 390, r: 62 };
+  // Top Central Orchestration Hub Coordinates in 1240x820 canvas
+  const hubCenter = { x: 620, y: 70, r: 52 };
 
-  // 12 Master Data Modules Node Coordinates (Left Side Wing)
-  const masterNodes: NodeCoord[] = useMemo(() => [
-    // Row 1 / Top Cluster: Basic Config
-    { id: 'mod-calendar', title: 'Calendar', category: 'master', icon: 'Calendar', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 130, y: 80, row: 1, subText: 'Shifts & Plant Holidays', erpAction: 'ERP Plant Calendar Sync', hasRedDot: true },
-    { id: 'mod-users', title: 'Users', category: 'master', icon: 'Users', color: '#f43f5e', borderColor: '#fb7185', bgColor: '#fff1f2', x: 300, y: 90, row: 1, subText: 'Roles & Authorizations', erpAction: 'SSO / LDAP Directory Sync' },
-    { id: 'mod-rm-store', title: 'Raw Material Store', category: 'master', icon: 'Warehouse', color: '#3b82f6', borderColor: '#60a5fa', bgColor: '#eff6ff', x: 60, y: 190, row: 1, subText: 'Racks, Bins & Aisles', erpAction: 'ERP Storage Location (SLOC)' },
-    { id: 'mod-docks', title: 'Unloading Docks', category: 'master', icon: 'Container', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 245, y: 205, row: 1, subText: 'Truck Bays & Levelers', erpAction: 'Plant Logistics Master', hasRedDot: true },
-
-    // Row 2 / Middle Cluster: Commercial & Materials
-    { id: 'mod-materials', title: 'Materials', category: 'master', icon: 'Box', color: '#eab308', borderColor: '#facc15', bgColor: '#fefce8', x: 20, y: 315, row: 2, subText: 'SKU Specs & Tolerances', erpAction: 'ERP Material Master (MARA)' },
-    { id: 'mod-contracts', title: 'Contracts', category: 'master', icon: 'FileText', color: '#ef4444', borderColor: '#f87171', bgColor: '#fef2f2', x: 210, y: 325, row: 2, subText: 'Rate SLAs & Delivery MOQ', erpAction: 'ERP Purchasing Info Record', hasRedDot: true },
-    { id: 'mod-suppliers', title: 'Suppliers', category: 'master', icon: 'Truck', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 370, y: 310, row: 2, subText: 'Vendor Profiles & Rating', erpAction: 'ERP Vendor Master (LFA1)' },
-    { id: 'mod-packing', title: 'Packing', category: 'master', icon: 'Package', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 40, y: 440, row: 2, subText: 'Pallets & Label Schemas', erpAction: 'Packaging Specification Sync' },
-
-    // Row 3 / Bottom Cluster: Engineering, Quality & Devices
-    { id: 'mod-bom', title: 'Bill of Materials', category: 'master', icon: 'Layers', color: '#8b5cf6', borderColor: '#a78bfa', bgColor: '#f5f3ff', x: 230, y: 450, row: 3, subText: 'Multi-Level BOM & Scrap', erpAction: 'ERP Production BOM (STPO)', hasRedDot: true },
-    { id: 'mod-reasons', title: 'Reason', category: 'master', icon: 'HelpCircle', color: '#84cc16', borderColor: '#a3e635', bgColor: '#f7fee7', x: 390, y: 460, row: 3, subText: 'Defect & Rejection Codes', erpAction: 'Standard Defect Catalog' },
-    { id: 'mod-equipment', title: 'Equipment', category: 'master', icon: 'Wrench', color: '#92400e', borderColor: '#b45309', bgColor: '#fffbeb', x: 120, y: 565, row: 3, subText: 'Forklifts & Weigh Scales', erpAction: 'Plant Maintenance (PM) Sync' },
-    { id: 'mod-devices', title: 'Device', category: 'master', icon: 'Smartphone', color: '#06b6d4', borderColor: '#22d3ee', bgColor: '#ecfeff', x: 300, y: 575, row: 3, subText: 'Ring Scanners & Displays', erpAction: 'ERX Hardware Subsystem', hasRedDot: true }
-  ], []);
-
-  // 14 Transactional Modules Node Coordinates (Right Side Wing)
+  // 14 Transactional Modules Node Coordinates (Vertical Top-to-Bottom Flow)
   const txNodes: NodeCoord[] = useMemo(() => [
-    // Row 1 / Stage 1: Demand, Plan, Sourcing & Gate
-    { id: 'tx-demand', title: 'Material Demand Creation', category: 'transactional', icon: 'FileSpreadsheet', color: '#8b5cf6', borderColor: '#a78bfa', bgColor: '#f5f3ff', x: 740, y: 80, row: 1, subText: 'MRP Net Requirement', erpAction: 'Imports MRP / Releases Demand' },
-    { id: 'tx-plan-exec', title: 'Production Plan Execution', category: 'transactional', icon: 'PlayCircle', color: '#ef4444', borderColor: '#f87171', bgColor: '#fef2f2', x: 910, y: 85, row: 1, subText: 'Shift Work Order Release', erpAction: 'ERP Production Order (CO01)', hasRedDot: true },
-    { id: 'tx-proc-schedule', title: 'Procurement Schedule & Requests (Buyer)', category: 'transactional', icon: 'Send', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 1070, y: 95, row: 1, subText: 'Buyer Delivery Call-Offs', erpAction: 'ERP Purchase Order (ME21N)' },
-    { id: 'tx-asn', title: 'Advance Shipping Notice (ASN) (Supplier)', category: 'transactional', icon: 'FileCheck', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 790, y: 195, row: 1, subText: 'Vendor Dispatch Manifest', erpAction: 'Inbound Delivery (VL31N)', hasRedDot: true },
-    { id: 'tx-gate', title: 'Gate Receipts', category: 'transactional', icon: 'ShieldCheck', color: '#3b82f6', borderColor: '#60a5fa', bgColor: '#eff6ff', x: 965, y: 200, row: 1, subText: '1-Scan Gate Entry Clearance', erpAction: 'ERP Gate Status Update' },
+    // Stage 1 / Row 1 (y: 150)
+    { id: 'tx-demand', title: 'Material Demand Creation', category: 'transactional', icon: 'FileSpreadsheet', color: '#8b5cf6', borderColor: '#a78bfa', bgColor: '#f5f3ff', x: 75, y: 150, row: 1, subText: 'MRP Net Requirement', erpAction: 'Imports MRP / Releases Demand', hasRedDot: true },
+    { id: 'tx-plan-exec', title: 'Production Plan Execution', category: 'transactional', icon: 'PlayCircle', color: '#ef4444', borderColor: '#f87171', bgColor: '#fef2f2', x: 355, y: 150, row: 1, subText: 'Shift Work Order Release', erpAction: 'ERP Production Order (CO01)', hasRedDot: true },
+    { id: 'tx-proc-schedule', title: 'Procurement Schedule', category: 'transactional', icon: 'Send', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 635, y: 150, row: 1, subText: 'Buyer Delivery Call-Offs', erpAction: 'ERP Purchase Order (ME21N)' },
+    { id: 'tx-asn', title: 'Advance Shipping Notice', category: 'transactional', icon: 'FileCheck', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 915, y: 150, row: 1, subText: 'Vendor Dispatch Manifest', erpAction: 'Inbound Delivery (VL31N)', hasRedDot: true },
 
-    // Row 2 / Stage 2: Docking, QC & Storage
-    { id: 'tx-docking', title: 'Docking & Unloading', category: 'transactional', icon: 'Truck', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 715, y: 315, row: 2, subText: 'Bay Assignment & Staging GRR', erpAction: 'Initial Goods Staging Log', hasRedDot: true },
-    { id: 'tx-qc', title: 'Inward QC / Inspections', category: 'transactional', icon: 'CheckCircle2', color: '#eab308', borderColor: '#facc15', bgColor: '#fefce8', x: 885, y: 320, row: 2, subText: 'Dual-Stream QC Routing', erpAction: 'ERP Quality Lot (QA32)' },
-    { id: 'tx-store-ops', title: 'RM Store Operations', category: 'transactional', icon: 'Warehouse', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 1055, y: 310, row: 2, subText: 'Real-Time Stock Movements', erpAction: 'ERP Stock Ledger (MARD)' },
+    // Stage 2 / Row 2 (y: 255)
+    { id: 'tx-gate', title: 'Gate Receipts', category: 'transactional', icon: 'ShieldCheck', color: '#3b82f6', borderColor: '#60a5fa', bgColor: '#eff6ff', x: 75, y: 255, row: 2, subText: '1-Scan Gate Clearance', erpAction: 'ERP Gate Status Update' },
+    { id: 'tx-docking', title: 'Docking & Unloading', category: 'transactional', icon: 'Truck', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 355, y: 255, row: 2, subText: 'Bay Assignment & GRR', erpAction: 'Initial Goods Staging Log', hasRedDot: true },
+    { id: 'tx-qc', title: 'Inward QC / Inspection', category: 'transactional', icon: 'CheckCircle2', color: '#eab308', borderColor: '#facc15', bgColor: '#fefce8', x: 635, y: 255, row: 2, subText: 'Dual-Stream QC Routing', erpAction: 'ERP Quality Lot (QA32)' },
+    { id: 'tx-material-inspection', title: 'Material Inspection', category: 'transactional', icon: 'SearchCheck', color: '#f43f5e', borderColor: '#fb7185', bgColor: '#fff1f2', x: 915, y: 255, row: 2, subText: 'Lab COA Verification', erpAction: 'ERP Results Recording (QE51N)' },
 
-    // Row 3 / Stage 3: Returns, Layout, Testing, Picking, Delivery & Line Replacement
-    { id: 'tx-rejections', title: 'Rejections & Returns', category: 'transactional', icon: 'RotateCcw', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 730, y: 440, row: 3, subText: 'Vendor RTV Clearance', erpAction: 'ERP Return Delivery (MIGO 122)', hasRedDot: true },
-    { id: 'tx-store-layout', title: 'Store Layout', category: 'transactional', icon: 'LayoutGrid', color: '#06b6d4', borderColor: '#22d3ee', bgColor: '#ecfeff', x: 900, y: 445, row: 3, subText: '2D/3D Dynamic Bin Mapping', erpAction: 'Bin Coordinates Telemetry' },
-    { id: 'tx-material-inspection', title: 'Material Inspection', category: 'transactional', icon: 'SearchCheck', color: '#f43f5e', borderColor: '#fb7185', bgColor: '#fff1f2', x: 1065, y: 440, row: 3, subText: 'Lab COA Verification', erpAction: 'ERP Results Recording (QE51N)' },
-    { id: 'tx-picking-putting', title: 'Picking & Putting', category: 'transactional', icon: 'ScanLine', color: '#ef4444', borderColor: '#f87171', bgColor: '#fef2f2', x: 785, y: 565, row: 3, subText: 'Wearable Ring Scan Path', erpAction: 'ERP Transfer Order (LT01)', hasRedDot: true },
-    { id: 'tx-delivery', title: 'Material Delivery', category: 'transactional', icon: 'ArrowRightCircle', color: '#14b8a6', borderColor: '#2dd4bf', bgColor: '#f0fdfa', x: 945, y: 570, row: 3, subText: 'Line-side Kitting Delivery', erpAction: 'Goods Issue to Order (MIGO 261)' },
-    { id: 'tx-line-rejections', title: 'Line Rejections & Re-issuer', category: 'transactional', icon: 'RefreshCw', color: '#8b5cf6', borderColor: '#a78bfa', bgColor: '#f5f3ff', x: 1075, y: 565, row: 3, subText: '<15 Min Defect Replacement', erpAction: 'Shop-Floor Scrap & Re-issue', hasRedDot: true }
+    // Stage 3 / Row 3 (y: 360)
+    { id: 'tx-store-ops', title: 'RM Store Operations', category: 'transactional', icon: 'Warehouse', color: '#f97316', borderColor: '#fb923c', bgColor: '#fff7ed', x: 175, y: 360, row: 3, subText: 'Real-Time Stock Movements', erpAction: 'ERP Stock Ledger (MARD)' },
+    { id: 'tx-store-layout', title: 'Store Layout', category: 'transactional', icon: 'LayoutGrid', color: '#06b6d4', borderColor: '#22d3ee', bgColor: '#ecfeff', x: 485, y: 360, row: 3, subText: '2D/3D Dynamic Mapping', erpAction: 'Bin Coordinates Telemetry' },
+    { id: 'tx-rejections', title: 'Rejections & Returns', category: 'transactional', icon: 'RotateCcw', color: '#10b981', borderColor: '#34d399', bgColor: '#ecfdf5', x: 795, y: 360, row: 3, subText: 'Vendor RTV Clearance', erpAction: 'ERP Return Delivery (MIGO 122)', hasRedDot: true },
+
+    // Stage 4 / Row 4 (y: 465)
+    { id: 'tx-picking-putting', title: 'Picking & Putting', category: 'transactional', icon: 'ScanLine', color: '#ef4444', borderColor: '#f87171', bgColor: '#fef2f2', x: 175, y: 465, row: 4, subText: 'Wearable Ring Scan Path', erpAction: 'ERP Transfer Order (LT01)', hasRedDot: true },
+    { id: 'tx-delivery', title: 'Material Delivery', category: 'transactional', icon: 'ArrowRightCircle', color: '#14b8a6', borderColor: '#2dd4bf', bgColor: '#f0fdfa', x: 485, y: 465, row: 4, subText: 'Line-side Kitting Delivery', erpAction: 'Goods Issue to Order (MIGO 261)' },
+    { id: 'tx-line-rejections', title: 'Line Rejections & Re-issue', category: 'transactional', icon: 'RefreshCw', color: '#8b5cf6', borderColor: '#a78bfa', bgColor: '#f5f3ff', x: 795, y: 465, row: 4, subText: '<15 Min Defect Replacement', erpAction: 'Shop-Floor Scrap & Re-issue', hasRedDot: true }
   ], []);
 
   // Icon Helper
@@ -182,13 +163,6 @@ export const ModulesArchitecture: React.FC = () => {
     }
   };
 
-  // Filter modules
-  const filteredMaster = useMemo(() => {
-    if (!searchQuery) return masterNodes;
-    const q = searchQuery.toLowerCase();
-    return masterNodes.filter(n => n.title.toLowerCase().includes(q) || n.subText.toLowerCase().includes(q) || n.erpAction.toLowerCase().includes(q));
-  }, [masterNodes, searchQuery]);
-
   const filteredTx = useMemo(() => {
     if (!searchQuery) return txNodes;
     const q = searchQuery.toLowerCase();
@@ -196,45 +170,36 @@ export const ModulesArchitecture: React.FC = () => {
   }, [txNodes, searchQuery]);
 
   return (
-    <div id="modules-architecture-container" className={`w-full py-0 px-0 transition-colors duration-300 ${isDark ? 'bg-slate-950 text-slate-100' : 'bg-[#faf7f5] text-slate-900'}`}>
+    <div id="modules-architecture-container" className={`w-full py-4 px-0 transition-colors duration-300 ${isDark ? 'bg-slate-950 text-slate-100' : 'bg-[#faf7f5] text-slate-900'}`}>
       <div className="w-full max-w-none px-0 space-y-0">
 
-        {/* MAIN DISPLAY: PURE INTERACTIVE DESKERA-STYLE FLOW (ONLY CANVAS FIT TO SCREEN) */}
+        {/* MAIN DISPLAY: PURE INTERACTIVE DESKERA-STYLE FLOW */}
         <div id="deskera-style-flow-wrapper" ref={containerRef} className="relative w-full overflow-hidden transition-all py-2">
           
-          {/* SVG Mindmap Scaled Canvas Container (No Horizontal Scrollbar & No Right Cut-off) */}
-          <div className="w-full flex justify-center items-start overflow-hidden">
+          {/* SVG Mindmap Scaled Canvas Container */}
+          <div
+            className="w-full flex justify-center items-start overflow-hidden"
+            style={{ height: `${570 * autoScale * zoomLevel}px`, transition: 'height 0.2s ease-out' }}
+          >
             <div
               style={{
                 width: '1240px',
-                height: `${710 * autoScale * zoomLevel}px`,
+                height: '570px',
                 transform: `scale(${autoScale * zoomLevel})`,
                 transformOrigin: 'top center',
-                transition: 'transform 0.2s ease-out, height 0.2s ease-out'
+                transition: 'transform 0.2s ease-out'
               }}
               className="relative select-none shrink-0"
             >
                 
-                <svg className="w-full h-full absolute inset-0 pointer-events-none" viewBox="0 0 1240 710">
+                <svg className="w-full h-full absolute inset-0 pointer-events-none" viewBox="0 0 1240 570">
                   <defs>
-                    {/* Warm ambient background glow centered at hub */}
-                    <radialGradient id="hubWarmGlow" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#f97316" stopOpacity={isDark ? "0.2" : "0.25"} />
-                      <stop offset="45%" stopColor="#fb923c" stopOpacity={isDark ? "0.08" : "0.1"} />
+                    {/* Warm ambient background glow centered at top hub */}
+                    <radialGradient id="hubWarmGlow" cx="50%" cy="30%" r="50%">
+                      <stop offset="0%" stopColor="#f97316" stopOpacity={isDark ? "0.3" : "0.32"} />
+                      <stop offset="50%" stopColor="#fb923c" stopOpacity={isDark ? "0.1" : "0.12"} />
                       <stop offset="100%" stopColor="#ea580c" stopOpacity="0" />
                     </radialGradient>
-
-                    {/* Master Data gradient line */}
-                    <linearGradient id="masterWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#a855f7" stopOpacity="0.4" />
-                      <stop offset="100%" stopColor="#ec4899" stopOpacity="0.8" />
-                    </linearGradient>
-
-                    {/* Transactional gradient line */}
-                    <linearGradient id="txWireGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.5" />
-                    </linearGradient>
 
                     {/* Filter drop-shadow for cards */}
                     <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
@@ -242,83 +207,164 @@ export const ModulesArchitecture: React.FC = () => {
                     </filter>
                   </defs>
 
-                  {/* 1. Large Central Radiant Halo Background */}
-                  <ellipse cx={hubCenter.x} cy={hubCenter.y} rx="360" ry="300" fill="url(#hubWarmGlow)" />
+                  {/* 1. Ambient Background Halo around Hub */}
+                  <ellipse cx={hubCenter.x} cy={hubCenter.y} rx="340" ry="180" fill="url(#hubWarmGlow)" />
 
                   {/* 2. Concentric Radiating Rings around Hub */}
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="85" fill="none" stroke="#f97316" strokeOpacity="0.3" strokeWidth="1.5" strokeDasharray="4 6" />
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="135" fill="none" stroke="#fb923c" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 7" />
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="190" fill="none" stroke="#fdba74" strokeOpacity="0.15" strokeWidth="1" />
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="250" fill="none" stroke="#fed7aa" strokeOpacity="0.12" strokeWidth="1" strokeDasharray="6 8" />
+                  <circle cx={hubCenter.x} cy={hubCenter.y} r="70" fill="none" stroke="#f97316" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="4 6" />
+                  <circle cx={hubCenter.x} cy={hubCenter.y} r="120" fill="none" stroke="#fb923c" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 7" />
 
-                  {/* 3. Curved Connector Lines: Master Data Modules (Left) to Hub */}
-                  {filteredMaster.map((node) => {
-                    const startX = node.x + 120;
-                    const startY = node.y + 24;
-                    const targetX = hubCenter.x - 55;
-                    const targetY = hubCenter.y;
-                    const c1X = startX + (targetX - startX) * 0.55;
-                    const c1Y = startY;
-                    const c2X = startX + (targetX - startX) * 0.75;
-                    const c2Y = targetY;
+                  {/* 3. Curved Vertical Connector Lines: Top Hub to Stage 1 Nodes */}
+                  {filteredTx.filter(n => n.row === 1).map((node) => {
+                    const cardW = 250;
+                    const startX = hubCenter.x;
+                    const startY = hubCenter.y + 42;
+                    const targetX = node.x + cardW / 2;
+                    const targetY = node.y;
+                    const c1X = startX;
+                    const c1Y = startY + (targetY - startY) * 0.45;
+                    const c2X = targetX;
+                    const c2Y = startY + (targetY - startY) * 0.75;
                     const pathD = `M ${startX} ${startY} C ${c1X} ${c1Y}, ${c2X} ${c2Y}, ${targetX} ${targetY}`;
                     const isHovered = hoveredNodeId === node.id || selectedModule.id === node.id;
 
                     return (
-                      <g key={`wire-master-${node.id}`}>
+                      <g key={`wire-hub-to-${node.id}`}>
                         <path
                           d={pathD}
                           fill="none"
                           stroke={isHovered ? node.color : (isDark ? '#475569' : '#cbd5e1')}
                           strokeWidth={isHovered ? 3 : 1.5}
-                          strokeOpacity={isHovered ? 0.9 : 0.45}
+                          strokeOpacity={isHovered ? 0.95 : 0.55}
                           className="transition-all duration-300"
                         />
-                        {/* Red anchor junction dot */}
                         {node.hasRedDot && (
-                          <circle cx={startX} cy={startY} r="3.5" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
+                          <circle cx={targetX} cy={targetY} r="3.5" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
                         )}
-                        {/* Animated Live Data Particle */}
                         {isSimulating && (
                           <circle r={isHovered ? 3.5 : 2.5} fill={node.color} opacity="0.85">
-                            <animateMotion path={pathD} dur={`${2.8 + (node.row * 0.4)}s`} repeatCount="indefinite" />
+                            <animateMotion path={pathD} dur="2.4s" repeatCount="indefinite" />
                           </circle>
                         )}
                       </g>
                     );
                   })}
 
-                  {/* 4. Curved Connector Lines: Hub to Transactional Modules (Right) */}
-                  {filteredTx.map((node) => {
-                    const startX = hubCenter.x + 55;
-                    const startY = hubCenter.y;
-                    const targetX = node.x;
-                    const targetY = node.y + 24;
-                    const c1X = startX + (targetX - startX) * 0.35;
-                    const c1Y = startY;
-                    const c2X = startX + (targetX - startX) * 0.65;
-                    const c2Y = targetY;
-                    const pathD = `M ${startX} ${startY} C ${c1X} ${c1Y}, ${c2X} ${c2Y}, ${targetX} ${targetY}`;
-                    const isHovered = hoveredNodeId === node.id || selectedModule.id === node.id;
+                  {/* 4. Downward Connector Lines: Stage 1 to Stage 2 */}
+                  {[0, 1, 2, 3].map((idx) => {
+                    const stage1Nodes = filteredTx.filter(n => n.row === 1);
+                    const stage2Nodes = filteredTx.filter(n => n.row === 2);
+                    const n1 = stage1Nodes[idx];
+                    const n2 = stage2Nodes[idx];
+                    if (!n1 || !n2) return null;
+
+                    const cardW = 250;
+                    const startX = n1.x + cardW / 2;
+                    const startY = n1.y + 56;
+                    const targetX = n2.x + cardW / 2;
+                    const targetY = n2.y;
+                    const pathD = `M ${startX} ${startY} L ${targetX} ${targetY}`;
+                    const isHovered = hoveredNodeId === n1.id || hoveredNodeId === n2.id;
 
                     return (
-                      <g key={`wire-tx-${node.id}`}>
+                      <g key={`wire-stage1-2-${idx}`}>
                         <path
                           d={pathD}
                           fill="none"
-                          stroke={isHovered ? node.color : (isDark ? '#475569' : '#cbd5e1')}
-                          strokeWidth={isHovered ? 3 : 1.5}
-                          strokeOpacity={isHovered ? 0.9 : 0.45}
+                          stroke={isHovered ? n2.color : (isDark ? '#475569' : '#cbd5e1')}
+                          strokeWidth={isHovered ? 2.5 : 1.5}
+                          strokeDasharray="4 4"
+                          strokeOpacity={0.6}
                           className="transition-all duration-300"
                         />
-                        {/* Red anchor junction dot */}
-                        {node.hasRedDot && (
-                          <circle cx={targetX} cy={targetY} r="3.5" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
+                        {n2.hasRedDot && (
+                          <circle cx={targetX} cy={targetY} r="3" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
                         )}
-                        {/* Animated Live Data Particle flowing outward to transactional floor */}
                         {isSimulating && (
-                          <circle r={isHovered ? 3.5 : 2.5} fill={node.color} opacity="0.85">
-                            <animateMotion path={pathD} dur={`${3.0 + (node.row * 0.35)}s`} repeatCount="indefinite" />
+                          <circle r={2.5} fill={n2.color} opacity="0.8">
+                            <animateMotion path={pathD} dur="1.8s" repeatCount="indefinite" />
+                          </circle>
+                        )}
+                      </g>
+                    );
+                  })}
+
+                  {/* 5. Downward Connector Lines: Stage 2 to Stage 3 */}
+                  {[0, 1, 2].map((idx) => {
+                    const stage2Nodes = filteredTx.filter(n => n.row === 2);
+                    const stage3Nodes = filteredTx.filter(n => n.row === 3);
+                    const n2 = stage2Nodes[idx + (idx === 2 ? 1 : 0)];
+                    const n3 = stage3Nodes[idx];
+                    if (!n2 || !n3) return null;
+
+                    const cardW2 = 250;
+                    const cardW3 = 270;
+                    const startX = n2.x + cardW2 / 2;
+                    const startY = n2.y + 56;
+                    const targetX = n3.x + cardW3 / 2;
+                    const targetY = n3.y;
+                    const c1X = startX;
+                    const c1Y = startY + (targetY - startY) * 0.5;
+                    const c2X = targetX;
+                    const c2Y = startY + (targetY - startY) * 0.5;
+                    const pathD = `M ${startX} ${startY} C ${c1X} ${c1Y}, ${c2X} ${c2Y}, ${targetX} ${targetY}`;
+                    const isHovered = hoveredNodeId === n3.id;
+
+                    return (
+                      <g key={`wire-stage2-3-${idx}`}>
+                        <path
+                          d={pathD}
+                          fill="none"
+                          stroke={isHovered ? n3.color : (isDark ? '#475569' : '#cbd5e1')}
+                          strokeWidth={isHovered ? 2.5 : 1.5}
+                          strokeOpacity={0.55}
+                          className="transition-all duration-300"
+                        />
+                        {n3.hasRedDot && (
+                          <circle cx={targetX} cy={targetY} r="3" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
+                        )}
+                        {isSimulating && (
+                          <circle r={2.5} fill={n3.color} opacity="0.8">
+                            <animateMotion path={pathD} dur="2.0s" repeatCount="indefinite" />
+                          </circle>
+                        )}
+                      </g>
+                    );
+                  })}
+
+                  {/* 6. Downward Connector Lines: Stage 3 to Stage 4 */}
+                  {[0, 1, 2].map((idx) => {
+                    const stage3Nodes = filteredTx.filter(n => n.row === 3);
+                    const stage4Nodes = filteredTx.filter(n => n.row === 4);
+                    const n3 = stage3Nodes[idx];
+                    const n4 = stage4Nodes[idx];
+                    if (!n3 || !n4) return null;
+
+                    const cardW = 270;
+                    const startX = n3.x + cardW / 2;
+                    const startY = n3.y + 56;
+                    const targetX = n4.x + cardW / 2;
+                    const targetY = n4.y;
+                    const pathD = `M ${startX} ${startY} L ${targetX} ${targetY}`;
+                    const isHovered = hoveredNodeId === n4.id;
+
+                    return (
+                      <g key={`wire-stage3-4-${idx}`}>
+                        <path
+                          d={pathD}
+                          fill="none"
+                          stroke={isHovered ? n4.color : (isDark ? '#475569' : '#cbd5e1')}
+                          strokeWidth={isHovered ? 2.5 : 1.5}
+                          strokeDasharray="4 4"
+                          strokeOpacity={0.6}
+                          className="transition-all duration-300"
+                        />
+                        {n4.hasRedDot && (
+                          <circle cx={targetX} cy={targetY} r="3" fill="#ef4444" stroke="#ffffff" strokeWidth="1.5" />
+                        )}
+                        {isSimulating && (
+                          <circle r={2.5} fill={n4.color} opacity="0.8">
+                            <animateMotion path={pathD} dur="1.8s" repeatCount="indefinite" />
                           </circle>
                         )}
                       </g>
@@ -326,125 +372,111 @@ export const ModulesArchitecture: React.FC = () => {
                   })}
                 </svg>
 
-                {/* 5. Central Hub Node (Exact Sarvosmi ERX™ RMSC Center) */}
+                {/* 7. Top Central Orchestration Core Hub (Sarvosmi ERX™ RMSC Center) */}
                 <div
                   style={{
-                    left: `${hubCenter.x - hubCenter.r}px`,
-                    top: `${hubCenter.y - hubCenter.r}px`,
-                    width: `${hubCenter.r * 2}px`,
-                    height: `${hubCenter.r * 2}px`
+                    left: `${hubCenter.x - 130}px`,
+                    top: `${hubCenter.y - 42}px`,
+                    width: '260px',
+                    height: '84px'
                   }}
-                  className="absolute z-10 rounded-xl bg-gradient-to-b from-slate-900 via-slate-950 to-black text-white p-2 shadow-2xl border-2 border-amber-500/50 flex flex-col items-center justify-center text-center cursor-pointer group hover:scale-105 transition-transform"
+                  className="absolute z-10 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-black text-white px-4 py-2.5 shadow-2xl border-2 border-amber-500/70 flex items-center justify-between cursor-pointer group hover:scale-[1.02] transition-transform"
                   onClick={() => handleSelectNode('tx-demand')}
                 >
-                  <div className="absolute inset-0 rounded-xl border border-amber-400/30 animate-ping pointer-events-none opacity-40" />
-                  <span className="text-[10px] font-black tracking-wide text-red-500 uppercase leading-none">Sarvosmi</span>
-                  <span className="text-xs font-black text-emerald-400 tracking-tight leading-none mt-0.5">ERX™</span>
-                  <span className="text-[11px] font-bold text-white tracking-widest leading-none mt-0.5">RMSC</span>
-                  <span className="text-[7.5px] font-medium text-amber-200/80 leading-tight mt-0.5 text-center px-1">Orchestration Core</span>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                  <div className="absolute inset-0 rounded-2xl border border-amber-400/30 animate-ping pointer-events-none opacity-30" />
+                  
+                  <div className="flex flex-col items-start">
+                    <span className="text-[10px] font-black tracking-widest text-red-500 uppercase leading-none">Sarvosmi</span>
+                    <span className="text-base font-black text-emerald-400 tracking-tight leading-none mt-1">ERX™ RMSC</span>
+                    <span className="text-[9px] font-medium text-amber-200/90 leading-tight mt-1">Real-Time Orchestration Core</span>
+                  </div>
+
+                  <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[9px] font-bold text-emerald-300 uppercase tracking-wider">Active</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                    </div>
                   </div>
                 </div>
 
-                {/* 6. HTML Master Data Nodes on Left */}
-                {filteredMaster.map((node) => {
-                  const isSelected = selectedModule.id === node.id;
-                  return (
-                    <div
-                      key={node.id}
-                      style={{ left: `${node.x}px`, top: `${node.y}px` }}
-                      onMouseEnter={() => setHoveredNodeId(node.id)}
-                      onMouseLeave={() => setHoveredNodeId(null)}
-                      onClick={() => handleSelectNode(node.id)}
-                      className={`absolute z-10 w-[145px] p-2 rounded-lg border transition-all duration-200 cursor-pointer ${
-                        isSelected
-                          ? isDark
-                            ? 'ring-2 ring-purple-500 bg-slate-800 border-purple-400/80 shadow-lg'
-                            : 'ring-2 ring-purple-500 bg-white border-purple-400 shadow-lg'
-                          : isDark
-                          ? 'bg-slate-900/95 border-slate-700/80 hover:border-purple-400 shadow-sm'
-                          : 'bg-white border-slate-200/90 hover:border-purple-400 shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.09)]'
-                      }`}
-                    >
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="w-7 h-7 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
-                          style={{
-                            backgroundColor: isDark ? `${node.color}22` : `${node.color}15`,
-                            color: node.color,
-                            border: `1.5px solid ${node.color}${isDark ? '40' : '30'}`
-                          }}
-                        >
-                          {renderIcon(node.icon, 'w-3.5 h-3.5')}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p className={`text-[11px] font-bold truncate leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                            {node.title}
-                          </p>
-                          <p className={`text-[9px] truncate leading-normal mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            {node.subText}
-                          </p>
-                        </div>
-                      </div>
-                      <div className={`mt-1.5 pt-1 border-t flex items-center justify-between ${isDark ? 'border-slate-200' : 'border-slate-100'}`}>
-                        <span className={`text-[8.5px] font-semibold tracking-wide uppercase ${isDark ? 'text-purple-300' : 'text-purple-700'}`}>
-                          Master Data
-                        </span>
-                        <ArrowUpRight className={`w-2.5 h-2.5 ${isDark ? 'text-slate-500' : 'text-slate-400'} shrink-0`} />
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {/* 7. HTML Transactional Nodes on Right */}
+                {/* 8. HTML Transactional Nodes In Vertical Stages */}
                 {filteredTx.map((node) => {
                   const isSelected = selectedModule.id === node.id;
+                  const isWide = node.row >= 3;
+                  const cardW = isWide ? 270 : 250;
+                  const isFlipped = hoveredNodeId === node.id;
+
                   return (
                     <div
                       key={node.id}
-                      style={{ left: `${node.x}px`, top: `${node.y}px` }}
+                      style={{ left: `${node.x}px`, top: `${node.y}px`, width: `${cardW}px`, perspective: '900px' }}
+                      className="absolute z-10 cursor-pointer"
                       onMouseEnter={() => setHoveredNodeId(node.id)}
                       onMouseLeave={() => setHoveredNodeId(null)}
                       onClick={() => handleSelectNode(node.id)}
-                      className={`absolute z-10 w-[150px] p-2 rounded-lg border transition-all duration-200 cursor-pointer ${
-                        isSelected
-                          ? isDark
-                            ? 'ring-2 ring-blue-500 bg-slate-800 border-blue-400/80 shadow-lg'
-                            : 'ring-2 ring-blue-500 bg-white border-blue-400 shadow-lg'
-                          : isDark
-                          ? 'bg-slate-900/95 border-slate-700/80 hover:border-blue-400 shadow-sm'
-                          : 'bg-white border-slate-200/90 hover:border-blue-400 shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_14px_rgba(0,0,0,0.09)]'
-                      }`}
                     >
-                      <div className="flex items-center gap-2.5">
+                      {/* Flip wrapper */}
+                      <div
+                        style={{
+                          position: 'relative',
+                          width: '100%',
+                          height: '86px',
+                          transformStyle: 'preserve-3d',
+                          transition: 'transform 0.52s cubic-bezier(0.4,0,0.2,1)',
+                          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                        }}
+                      >
+                        {/* ── FRONT FACE ── */}
                         <div
-                          className="w-8 h-8 rounded-md flex items-center justify-center shrink-0 transition-transform group-hover:scale-105"
-                          style={{
-                            backgroundColor: isDark ? `${node.color}22` : `${node.color}15`,
-                            color: node.color,
-                            border: `1.5px solid ${node.color}${isDark ? '40' : '30'}`
-                          }}
+                          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                          className={`absolute inset-0 p-2.5 rounded-xl border overflow-hidden ${
+                            isSelected
+                              ? isDark ? 'ring-2 ring-blue-500 bg-slate-800 border-blue-400/80 shadow-lg' : 'ring-2 ring-blue-500 bg-white border-blue-400 shadow-lg'
+                              : isDark ? 'bg-slate-900/95 border-slate-700/80' : 'bg-white border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.05)]'
+                          }`}
                         >
-                          {renderIcon(node.icon, 'w-4 h-4')}
+                          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: node.color }} />
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
+                              style={{ backgroundColor: isDark ? `${node.color}22` : `${node.color}15`, color: node.color, border: `1.5px solid ${node.color}${isDark ? '40' : '30'}` }}
+                            >
+                              {renderIcon(node.icon, 'w-3.5 h-3.5')}
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className={`text-[11px] font-bold truncate leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{node.title}</p>
+                              <p className={`text-[9.5px] truncate leading-normal mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{node.subText}</p>
+                            </div>
+                          </div>
+                          <div className={`mt-2 pt-1.5 border-t flex items-center justify-between ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
+                            <span className={`text-[8px] font-semibold tracking-wide uppercase ${isDark ? 'text-blue-400' : 'text-blue-700'}`}>Phase 1 Trans.</span>
+                            <ArrowUpRight className={`w-2.5 h-2.5 ${isDark ? 'text-slate-500' : 'text-slate-400'} shrink-0`} />
+                          </div>
                         </div>
-                        <div className="min-w-0 flex-1">
-                          <p className={`text-xs font-bold truncate leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                            {node.title}
+
+                        {/* ── BACK FACE ── */}
+                        <div
+                          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+                          className="absolute inset-0 p-2.5 rounded-xl border overflow-hidden bg-slate-900 border-slate-700"
+                        >
+                          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: node.color }} />
+                          <p className="text-[7.5px] font-black tracking-widest uppercase text-slate-500 mb-1">ERP Action</p>
+                          <p className="text-[10px] font-bold text-white leading-snug" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                            {node.erpAction}
                           </p>
-                          <p className={`text-[10px] truncate leading-normal mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
-                            {node.subText}
-                          </p>
+                          <div className="mt-2 pt-1.5 border-t border-slate-800 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: node.color }} />
+                            <span className="text-[8px] font-semibold uppercase tracking-wider" style={{ color: node.color }}>
+                              {node.hasRedDot ? 'Priority' : 'Standard'}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div className={`mt-2 pt-1.5 border-t flex items-center justify-between ${isDark ? 'border-slate-200' : 'border-slate-100'}`}>
-                        <span className={`text-[9px] font-semibold tracking-wide uppercase ${isDark ? 'text-blue-400' : 'text-blue-700'}`}>
-                          Phase 1 Trans.
-                        </span>
-                        <ArrowUpRight className={`w-3 h-3 ${isDark ? 'text-slate-500' : 'text-slate-400'} shrink-0`} />
                       </div>
                     </div>
                   );
