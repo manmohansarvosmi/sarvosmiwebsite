@@ -30,10 +30,12 @@ export const Navbar: React.FC = () => {
       id="main-sticky-navbar"
       className={`sticky top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? 'navbar-glass'
+          ? isDark
+            ? 'bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 backdrop-blur-xl border-b border-slate-800/80 shadow-lg'
+            : 'bg-gradient-to-r from-white/98 via-slate-50/98 to-blue-50/90 backdrop-blur-xl border-b border-slate-200/90 shadow-sm'
           : isDark
-            ? 'bg-slate-950/90 backdrop-blur-xl border-b border-white/[0.06]'
-            : 'bg-white/90 backdrop-blur-xl border-b border-slate-200/60'
+            ? 'bg-gradient-to-r from-slate-950/95 via-slate-900/95 to-slate-950/95 backdrop-blur-xl border-b border-white/[0.08]'
+            : 'bg-gradient-to-r from-slate-50/95 via-white/95 to-indigo-50/60 backdrop-blur-xl border-b border-slate-200/80 shadow-xs'
       }`}
     >
       <div className="w-full px-4 sm:px-6 lg:px-8">
