@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X, ChevronRight } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import sarvosmiLogo from '../asset/sarvosmi.png';
+import sarvosmiLogo from '../asset/sarvosmi.jpeg';
 import logoRmscErx from '../asset/logo_rmscerx.png';
 
 export const Navbar: React.FC = () => {
@@ -36,35 +36,33 @@ export const Navbar: React.FC = () => {
             : 'bg-white/90 backdrop-blur-xl border-b border-slate-200/60'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 xl:px-16">
-        <div className="flex items-center justify-between h-[44px] gap-4">
+      <div className="w-full px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-[58px] sm:h-[64px] gap-4">
 
           {/* ── Brand Logo ─────────────────────────────────── */}
           <a href="#" id="brand-logo" className="flex items-center gap-2 shrink-0 group">
-            <div className="h-10 flex items-center">
+            <div className="h-12 flex items-center">
               <img
                 src={sarvosmiLogo}
                 alt="Sarvosmi Logo"
-                className="h-10 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+                className="h-10 sm:h-11 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
               />
             </div>
-            
-
           </a>
 
           {/* ── Center Nav Links ────────────────────────────── */}
-          <nav className="hidden lg:flex items-center gap-0">
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5">
             {navItems.map((item, idx) => (
               <a
                 key={idx}
                 href={item.href}
-                className={`nav-link px-2.5 py-1 rounded flex items-center transition-all duration-200 ${
+                className={`nav-link px-3 py-1.5 rounded-lg flex items-center transition-all duration-200 ${
                   item.label === 'Sarvosmi ERX™ RMSC'
-                    ? 'opacity-90 hover:opacity-100'
-                    : `text-[11.5px] font-semibold font-grotesk ${
+                    ? 'opacity-95 hover:opacity-100 hover:bg-slate-100 dark:hover:bg-white/[0.05]'
+                    : `text-[13px] xl:text-[14px] font-bold font-grotesk tracking-tight ${
                         isDark
-                          ? 'text-slate-400 hover:text-white hover:bg-white/[0.05]'
-                          : 'text-slate-500 hover:text-indigo-700 hover:bg-indigo-50/70'
+                          ? 'text-white hover:text-emerald-400 hover:bg-white/[0.05]'
+                          : 'text-slate-950 hover:text-emerald-600 hover:bg-slate-100'
                       }`
                 }`}
               >
@@ -72,7 +70,7 @@ export const Navbar: React.FC = () => {
                   <img
                     src={logoRmscErx}
                     alt="Sarvosmi ERX™ RMSC"
-                    className={`h-5 w-auto object-contain ${isDark ? 'brightness-0 invert' : 'mix-blend-multiply'}`}
+                    className={`h-[18px] xl:h-5 w-auto object-contain inline-block ${isDark ? 'brightness-0 invert' : 'mix-blend-multiply'}`}
                   />
                 ) : (
                   item.label
@@ -82,34 +80,33 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* ── Right Actions ───────────────────────────────── */}
-          <div className="flex items-center gap-1.5 shrink-0">
-
+          <div className="flex items-center gap-2 shrink-0">
 
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
               id="theme-toggle-btn"
               title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className={`p-1.5 rounded border transition-all duration-200 ${
+              className={`p-2 rounded-lg border transition-all duration-200 ${
                 isDark
                   ? 'bg-slate-900 border-slate-700/60 text-amber-400 hover:bg-slate-800'
-                  : 'bg-slate-50 border-slate-200 text-slate-500 hover:bg-indigo-50 hover:border-indigo-200 hover:text-indigo-600'
+                  : 'bg-slate-50 border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-emerald-600'
               }`}
             >
-              {isDark ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+              {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </button>
 
             {/* Mobile Hamburger */}
             <button
               id="mobile-menu-btn"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className={`p-1.5 rounded border lg:hidden transition-all duration-200 ${
+              className={`p-2 rounded-lg border lg:hidden transition-all duration-200 ${
                 isDark
                   ? 'bg-slate-900 border-slate-700/60 text-slate-300'
                   : 'bg-slate-50 border-slate-200 text-slate-600'
               }`}
             >
-              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
@@ -126,10 +123,10 @@ export const Navbar: React.FC = () => {
                 key={idx}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-xs text-sm font-semibold font-grotesk transition-all ${
+                className={`flex items-center justify-between px-3 py-2.5 rounded-md text-sm font-bold font-grotesk transition-all ${
                   isDark
-                    ? 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                    : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-700'
+                    ? 'text-white hover:bg-slate-800 hover:text-emerald-400'
+                    : 'text-slate-950 hover:bg-slate-100 hover:text-emerald-600'
                 }`}
               >
                 {item.label}

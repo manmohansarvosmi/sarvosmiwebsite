@@ -7,7 +7,7 @@ import React from 'react';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
 import { Navbar } from './components/Navbar';
 import footerImg from './asset/footer.png';
-import sarvosmiLogo from './asset/sarvosmi.png';
+import sarvosmiLogo from './asset/sarvosmi.jpeg';
 
 import { WhyErx } from './components/WhyErx';
 import { QuestionsSection } from './components/QuestionsSection';

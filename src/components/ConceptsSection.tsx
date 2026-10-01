@@ -26,7 +26,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import sarvosmiLogo from '../asset/sarvosmi.png';
+import sarvosmiLogo from '../asset/sarvosmi.jpeg';
 import conceptPlanningImg from '../asset/concept_planning.jpg';
 import conceptSupplierImg from '../asset/concept_supplier.jpg';
 

@@ -17,7 +17,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import sarvosmiLogo from '../asset/sarvosmi.png';
+import sarvosmiLogo from '../asset/sarvosmi.jpeg';
 
 export const ObjectivesSection: React.FC = () => {
   const { isDark } = useTheme();
