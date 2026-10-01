@@ -94,12 +94,12 @@ export const WhyErx: React.FC = () => {
               className="h-5 sm:h-6 w-auto object-contain inline-block mix-blend-multiply dark:bg-white dark:px-1.5 dark:py-0.5 dark:rounded-md shadow-xs"
             />
             <span className="text-sm sm:text-base font-black text-slate-900 dark:text-white tracking-tight">
-              Makes a Difference?
+              Makes a Difference:
             </span>
           </div>
 
           <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 max-w-xl font-medium">
-            Bridging ERP planning to physical shop-floor reality with sub-second telemetry, automated deviation alerts and paperless execution.
+            Bridging planning to physical shop floor reality with instant telemetry, automated deviation notifications and paperless execution
           </p>
         </div>
 

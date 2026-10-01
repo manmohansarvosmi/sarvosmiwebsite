@@ -194,25 +194,43 @@ export const ModulesArchitecture: React.FC = () => {
                 
                 <svg className="w-full h-full absolute inset-0 pointer-events-none" viewBox="0 0 1240 570">
                   <defs>
-                    {/* Warm ambient background glow centered at top hub */}
-                    <radialGradient id="hubWarmGlow" cx="50%" cy="30%" r="50%">
-                      <stop offset="0%" stopColor="#f97316" stopOpacity={isDark ? "0.3" : "0.32"} />
-                      <stop offset="50%" stopColor="#fb923c" stopOpacity={isDark ? "0.1" : "0.12"} />
-                      <stop offset="100%" stopColor="#ea580c" stopOpacity="0" />
+                    <radialGradient id="hubWarmGlow" cx="50%" cy="15%" r="45%">
+                      <stop offset="0%" stopColor="#6366f1" stopOpacity={isDark ? "0.25" : "0.18"} />
+                      <stop offset="60%" stopColor="#8b5cf6" stopOpacity={isDark ? "0.08" : "0.06"} />
+                      <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
                     </radialGradient>
-
-                    {/* Filter drop-shadow for cards */}
+                    <linearGradient id="stageLabel1" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#8b5cf6" /><stop offset="100%" stopColor="#6366f1" />
+                    </linearGradient>
+                    <linearGradient id="stageLabel2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#3b82f6" /><stop offset="100%" stopColor="#06b6d4" />
+                    </linearGradient>
+                    <linearGradient id="stageLabel3" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#f97316" /><stop offset="100%" stopColor="#eab308" />
+                    </linearGradient>
+                    <linearGradient id="stageLabel4" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#ef4444" /><stop offset="100%" stopColor="#8b5cf6" />
+                    </linearGradient>
                     <filter id="cardShadow" x="-10%" y="-10%" width="120%" height="120%">
-                      <feDropShadow dx="0" dy="4" stdDeviation="6" floodOpacity={isDark ? "0.4" : "0.08"} />
+                      <feDropShadow dx="0" dy="3" stdDeviation="5" floodOpacity={isDark ? "0.35" : "0.07"} />
                     </filter>
                   </defs>
 
-                  {/* 1. Ambient Background Halo around Hub */}
-                  <ellipse cx={hubCenter.x} cy={hubCenter.y} rx="340" ry="180" fill="url(#hubWarmGlow)" />
+                  {/* Ambient glow */}
+                  <ellipse cx={hubCenter.x} cy={hubCenter.y} rx="380" ry="160" fill="url(#hubWarmGlow)" />
 
-                  {/* 2. Concentric Radiating Rings around Hub */}
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="70" fill="none" stroke="#f97316" strokeOpacity="0.35" strokeWidth="1.5" strokeDasharray="4 6" />
-                  <circle cx={hubCenter.x} cy={hubCenter.y} r="120" fill="none" stroke="#fb923c" strokeOpacity="0.2" strokeWidth="1" strokeDasharray="3 7" />
+                  {/* Stage row pills on left */}
+                  {[
+                    { y: 150, label: 'STAGE 1', grad: 'url(#stageLabel1)' },
+                    { y: 255, label: 'STAGE 2', grad: 'url(#stageLabel2)' },
+                    { y: 360, label: 'STAGE 3', grad: 'url(#stageLabel3)' },
+                    { y: 465, label: 'STAGE 4', grad: 'url(#stageLabel4)' },
+                  ].map(s => (
+                    <g key={s.label}>
+                      <rect x="8" y={s.y + 28} width="54" height="16" rx="8" fill={s.grad} opacity="0.85" />
+                      <text x="35" y={s.y + 39} textAnchor="middle" fontSize="7" fontWeight="800" fill="white" letterSpacing="1" fontFamily="sans-serif">{s.label}</text>
+                    </g>
+                  ))}
 
                   {/* 3. Curved Vertical Connector Lines: Top Hub to Stage 1 Nodes */}
                   {filteredTx.filter(n => n.row === 1).map((node) => {
@@ -372,40 +390,45 @@ export const ModulesArchitecture: React.FC = () => {
                   })}
                 </svg>
 
-                {/* 7. Top Central Orchestration Core Hub (Sarvosmi ERX™ RMSC Center) */}
+                {/* 7. Hub — Glassmorphism Pill */}
                 <div
                   style={{
-                    left: `${hubCenter.x - 130}px`,
-                    top: `${hubCenter.y - 42}px`,
-                    width: '260px',
-                    height: '84px'
+                    left: `${hubCenter.x - 150}px`,
+                    top: `${hubCenter.y - 38}px`,
+                    width: '300px',
+                    height: '76px',
+                    background: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)',
+                    boxShadow: '0 0 0 1.5px rgba(99,102,241,0.6), 0 0 32px rgba(99,102,241,0.25), 0 8px 32px rgba(0,0,0,0.5)'
                   }}
-                  className="absolute z-10 rounded-2xl bg-gradient-to-r from-slate-950 via-slate-900 to-black text-white px-4 py-2.5 shadow-2xl border-2 border-amber-500/70 flex items-center justify-between cursor-pointer group hover:scale-[1.02] transition-transform"
+                  className="absolute z-10 rounded-2xl text-white px-5 py-3 flex items-center justify-between cursor-pointer group hover:scale-[1.03] transition-all duration-300"
                   onClick={() => handleSelectNode('tx-demand')}
                 >
-                  <div className="absolute inset-0 rounded-2xl border border-amber-400/30 animate-ping pointer-events-none opacity-30" />
+                  {/* Animated border glow */}
+                  <div className="absolute inset-0 rounded-2xl" style={{ background: 'linear-gradient(135deg, rgba(99,102,241,0.3), rgba(139,92,246,0.1), rgba(99,102,241,0.3))', animation: 'pulse 3s ease-in-out infinite' }} />
                   
-                  <div className="flex flex-col items-start">
-                    <span className="text-[10px] font-black tracking-widest text-red-500 uppercase leading-none">Sarvosmi</span>
-                    <span className="text-base font-black text-emerald-400 tracking-tight leading-none mt-1">ERX™ RMSC</span>
-                    <span className="text-[9px] font-medium text-amber-200/90 leading-tight mt-1">Real-Time Orchestration Core</span>
+                  <div className="flex flex-col items-start relative z-10">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
+                      <span className="text-[8px] font-black tracking-[0.2em] text-red-400 uppercase">Sarvosmi</span>
+                    </div>
+                    <span className="text-[17px] font-black tracking-tight leading-none" style={{ background: 'linear-gradient(90deg, #34d399, #22d3ee)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>ERX™ RMSC</span>
+                    <span className="text-[8px] font-medium text-indigo-300/80 leading-tight mt-0.5 tracking-wide">Real-Time Orchestration Core</span>
                   </div>
 
-                  <div className="flex flex-col items-end gap-1.5">
-                    <div className="flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                      <span className="text-[9px] font-bold text-emerald-300 uppercase tracking-wider">Active</span>
+                  <div className="flex flex-col items-end gap-2 relative z-10">
+                    <div className="flex items-center gap-1.5 bg-emerald-500/15 border border-emerald-500/30 rounded-full px-2 py-0.5">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      <span className="text-[8px] font-black text-emerald-300 uppercase tracking-wider">Live</span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
+                      {['#6366f1','#10b981','#06b6d4','#f59e0b'].map(c => (
+                        <span key={c} className="w-2 h-2 rounded-full" style={{ backgroundColor: c, boxShadow: `0 0 4px ${c}` }} />
+                      ))}
                     </div>
                   </div>
                 </div>
 
-                {/* 8. HTML Transactional Nodes In Vertical Stages */}
+                {/* 8. HTML Transactional Nodes — Redesigned */}
                 {filteredTx.map((node) => {
                   const isSelected = selectedModule.id === node.id;
                   const isWide = node.row >= 3;
@@ -421,60 +444,85 @@ export const ModulesArchitecture: React.FC = () => {
                       onMouseLeave={() => setHoveredNodeId(null)}
                       onClick={() => handleSelectNode(node.id)}
                     >
-                      {/* Flip wrapper */}
-                      <div
-                        style={{
-                          position: 'relative',
-                          width: '100%',
-                          height: '86px',
-                          transformStyle: 'preserve-3d',
-                          transition: 'transform 0.52s cubic-bezier(0.4,0,0.2,1)',
-                          transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
-                        }}
-                      >
+                      <div style={{
+                        position: 'relative', width: '100%', height: '86px',
+                        transformStyle: 'preserve-3d',
+                        transition: 'transform 0.52s cubic-bezier(0.4,0,0.2,1)',
+                        transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+                      }}>
+
                         {/* ── FRONT FACE ── */}
                         <div
                           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
-                          className={`absolute inset-0 p-2.5 rounded-xl border overflow-hidden ${
-                            isSelected
-                              ? isDark ? 'ring-2 ring-blue-500 bg-slate-800 border-blue-400/80 shadow-lg' : 'ring-2 ring-blue-500 bg-white border-blue-400 shadow-lg'
-                              : isDark ? 'bg-slate-900/95 border-slate-700/80' : 'bg-white border-slate-200/90 shadow-[0_2px_8px_rgba(0,0,0,0.05)]'
+                          className={`absolute inset-0 rounded-xl overflow-hidden ${
+                            isSelected ? 'ring-2 shadow-lg' : ''
                           }`}
+                          style2={isSelected ? { ringColor: node.color } : {}}
                         >
-                          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: node.color }} />
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0"
-                              style={{ backgroundColor: isDark ? `${node.color}22` : `${node.color}15`, color: node.color, border: `1.5px solid ${node.color}${isDark ? '40' : '30'}` }}
-                            >
-                              {renderIcon(node.icon, 'w-3.5 h-3.5')}
+                          {/* Card bg with subtle color tint */}
+                          <div className="absolute inset-0 rounded-xl" style={{
+                            background: isDark
+                              ? `linear-gradient(135deg, #0f172a 0%, ${node.color}08 100%)`
+                              : `linear-gradient(135deg, #ffffff 0%, ${node.color}06 100%)`,
+                            border: isSelected
+                              ? `1.5px solid ${node.color}60`
+                              : isDark ? '1px solid rgba(71,85,105,0.7)' : '1px solid rgba(226,232,240,0.9)',
+                            boxShadow: isSelected
+                              ? `0 0 0 2px ${node.color}40, 0 4px 16px ${node.color}20`
+                              : isDark ? '0 2px 8px rgba(0,0,0,0.3)' : '0 2px 8px rgba(15,23,42,0.05)'
+                          }} />
+
+                          {/* Left colored accent bar */}
+                          <div className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full" style={{ backgroundColor: node.color, boxShadow: `0 0 6px ${node.color}60` }} />
+
+                          <div className="relative z-10 px-3 pt-2.5 pb-0">
+                            <div className="flex items-center gap-2">
+                              {/* Icon with gradient bg */}
+                              <div className="w-7 h-7 rounded-lg flex items-center justify-center shrink-0" style={{
+                                background: `linear-gradient(135deg, ${node.color}20, ${node.color}10)`,
+                                color: node.color,
+                                border: `1px solid ${node.color}30`
+                              }}>
+                                {renderIcon(node.icon, 'w-3.5 h-3.5')}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className={`text-[11px] font-bold leading-tight truncate ${isDark ? 'text-white' : 'text-slate-800'}`}>{node.title}</p>
+                                <p className={`text-[9px] leading-normal mt-0.5 font-medium truncate ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{node.subText}</p>
+                              </div>
+                              {node.hasRedDot && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0 animate-pulse" />
+                              )}
                             </div>
-                            <div className="min-w-0 flex-1">
-                              <p className={`text-[11px] font-bold truncate leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>{node.title}</p>
-                              <p className={`text-[9.5px] truncate leading-normal mt-0.5 font-medium ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>{node.subText}</p>
+                            <div className="mt-2 pt-1.5 flex items-center justify-between" style={{ borderTop: isDark ? '1px solid rgba(71,85,105,0.5)' : '1px solid rgba(226,232,240,0.8)' }}>
+                              <span className="text-[7.5px] font-black tracking-[0.12em] uppercase" style={{ color: node.color }}>Phase 1 · Trans.</span>
+                              <ArrowUpRight className="w-2.5 h-2.5 shrink-0" style={{ color: node.color, opacity: 0.6 }} />
                             </div>
-                          </div>
-                          <div className={`mt-2 pt-1.5 border-t flex items-center justify-between ${isDark ? 'border-slate-800' : 'border-slate-100'}`}>
-                            <span className={`text-[8px] font-semibold tracking-wide uppercase ${isDark ? 'text-blue-400' : 'text-blue-700'}`}>Phase 1 Trans.</span>
-                            <ArrowUpRight className={`w-2.5 h-2.5 ${isDark ? 'text-slate-500' : 'text-slate-400'} shrink-0`} />
                           </div>
                         </div>
 
                         {/* ── BACK FACE ── */}
                         <div
-                          style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
-                          className="absolute inset-0 p-2.5 rounded-xl border overflow-hidden bg-slate-900 border-slate-700"
+                          style={{
+                            backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden',
+                            transform: 'rotateY(180deg)',
+                            background: `linear-gradient(135deg, #0f172a 0%, ${node.color}18 100%)`,
+                            border: `1.5px solid ${node.color}40`,
+                            boxShadow: `0 0 20px ${node.color}20`,
+                          }}
+                          className="absolute inset-0 rounded-xl overflow-hidden"
                         >
-                          <div className="absolute top-0 left-0 right-0 h-0.5" style={{ backgroundColor: node.color }} />
-                          <p className="text-[7.5px] font-black tracking-widest uppercase text-slate-500 mb-1">ERP Action</p>
-                          <p className="text-[10px] font-bold text-white leading-snug" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                            {node.erpAction}
-                          </p>
-                          <div className="mt-2 pt-1.5 border-t border-slate-800 flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: node.color }} />
-                            <span className="text-[8px] font-semibold uppercase tracking-wider" style={{ color: node.color }}>
-                              {node.hasRedDot ? 'Priority' : 'Standard'}
-                            </span>
+                          <div className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full" style={{ backgroundColor: node.color, boxShadow: `0 0 8px ${node.color}` }} />
+                          <div className="px-3 pt-2.5">
+                            <p className="text-[7px] font-black tracking-[0.18em] uppercase mb-1" style={{ color: `${node.color}90` }}>ERP Action</p>
+                            <p className="text-[10.5px] font-bold text-white leading-snug" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                              {node.erpAction}
+                            </p>
+                            <div className="mt-2 pt-1.5 flex items-center gap-1.5" style={{ borderTop: `1px solid ${node.color}25` }}>
+                              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: node.color, boxShadow: `0 0 4px ${node.color}` }} />
+                              <span className="text-[7.5px] font-black uppercase tracking-wider" style={{ color: node.color }}>
+                                {node.hasRedDot ? '🔴 Priority Module' : 'Standard Module'}
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
